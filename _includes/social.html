@@ -38,11 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || isTyping() ) return;
 
     if (e.key.length === 1) { // Not SpecialKey
-      buf = (buf + e.key.toLowerCase()).slice(-MAX_KEY_BUFFER_SIZE);
+      buf = (buf + e.key.toLowerCase()).slice(-KEY_CACHE_SIZE);
       
       if (buf.length >= 2) preConnect();
       clearTimeout(timer);
-      timer = setTimeout(() => { buf = ""; }, CLEAR_BUFFER_TIME); 
+      timer = setTimeout(() => { buf = ""; }, KEY_CACHE_TIMEOUT); 
     }
     for (const cmd in commands)
       if (buf.endsWith(cmd)) {
