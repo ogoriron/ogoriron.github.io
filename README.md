@@ -13,6 +13,9 @@ chartjs: true
 {% assign p = site.posts | where_exp: "item", "item.path contains '1959-01-01'" | first %}
 <div>{{ p.content }}</div>
 
+{% assign p = site.posts | where_exp: "item", "item.path contains '2021-01-01'" | first %}
+<div>{{ p.content }}</div>
+
 <!--誘った方-->
 
 ### 関連
