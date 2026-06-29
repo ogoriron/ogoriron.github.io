@@ -20,7 +20,7 @@ chartjs: true
 
         <li>
 {% assign p = site.posts | where_exp: "item", "item.path contains '2021-01-01'" | first %}
-<div>{{ p.content }}</div>
+<div>{{ p.excerpt }}</div>
         </li>
 
   </ul>
