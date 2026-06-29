@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const table = sourceDiv.querySelector("table");
       if (!table || sourceDiv.nextElementSibling?.querySelector?.("canvas")) return;
 
-      // 憑依の最初のセルから <!--省略n--> を空白付きで探す
-      const firstCell = table.getElementsByTagName('*')[0];
+      // 表の最初のセルから <!--省略n--> を空白付きで探す
+      const firstCell = table.querySelector("th, td");
       const match = firstCell ? firstCell.innerHTML.match(/<!--\s*省略\s*(\d+)\s*-->/) : null;
       const skipCount = match ? parseInt(match[1], 10) : 0;
 
@@ -217,9 +217,69 @@ document.addEventListener("DOMContentLoaded", () => {
       sourceDiv.style.display = 'none'; // 元の表を非表示
     };
 
+    // 縦型積み上げグラフ ---
+    const renderVStacked = (sourceDiv) => {
+      const table = sourceDiv.querySelector("table");
+      if (!table || sourceDiv.nextElementSibling?.querySelector?.("canvas")) return;
+
+      const ths = Array.from(table.querySelectorAll("thead th"));
+      if (ths.length < 3) return; 
+
+      const chartTitle = ths.pop().textContent.trim();
+      const columnLabels = ths.map(th => th.textContent.replace(/\s*\(%\)/, '').trim());
+
+      const datasetsData = Array.from({ length: columnLabels.length }, () => []);
+      const labels = [];
+
+      table.querySelectorAll("tbody tr").forEach(row => {
+        const cells = Array.from(row.querySelectorAll("td"));
+        if (cells.length === ths.length + 1) {
+          labels.push(cells.pop().textContent.trim());
+          cells.forEach((c, idx) => datasetsData[idx].push(parseFloat(c.textContent.replace(/[\s%]/g, "")) || 0));
+        }
+      });
+
+      const baseColor = /男/.test(chartTitle) ? getMFBackgroundColor('男') : getMFBackgroundColor('女');
+      
+      const datasets = columnLabels.slice(1).map((label, idx) => ({
+        label: label,
+        data: datasetsData[idx + 1], 
+        backgroundColor: idx === 0 ? baseColor : baseColor + '66', 
+        borderColor: borderColor,
+        borderWidth: borderWidth
+      }));
+
+      const canvas = document.createElement("canvas");
+      const wrapper = document.createElement("div");
+      wrapper.style = "max-width:600px; margin:24px auto;";
+      wrapper.appendChild(canvas);
+      sourceDiv.after(wrapper);
+
+      new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          // 🟢 共通化した変数（isMobile, textColor, boxWidth など）をそのまま利用
+          aspectRatio: isMobile ? 1.3 : 1.8,
+          plugins: {
+            title: { display: true, text: chartTitle, color: textColor, font: { size: 14, weight: 'bold' } },
+            legend: { position: 'bottom', labels: { color: textColor, boxWidth: boxWidth, padding: padding, font: { size: fontSize } } }
+          },
+          scales: {
+            x: { stacked: true, ticks: { color: textColor } },
+            y: { stacked: true, max: 50, ticks: { color: textColor, callback: v => v + '%' } }
+          }
+        }
+      });
+      sourceDiv.style.display = 'none';
+    };
+
     // --- 各クラスの表を探し実行 ---
     document.querySelectorAll(".chart-MF").forEach(div => renderChart(div, 'MF'));
     document.querySelectorAll(".chart-cost").forEach(div => renderChart(div, 'cost'));
+    // 🟢 追記: 新しい縦型グラフ用のクラスをトリガーに追加
+    document.querySelectorAll(".chart-vstacked").forEach(div => renderVStacked(div));
   };
 })();
 </script>
