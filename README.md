@@ -10,11 +10,21 @@ chartjs: true
 
 ※用語の制限: 「奢り」は100%を支払う。「割り勘」は50%ずつ支払う。その中間がどちらで呼ばれるかは、個々の価値観で異なりそう。
 
+<div class="tag-page-wrapper">
+  <ul class="post-list">
+
+        <li>
 {% assign p = site.posts | where_exp: "item", "item.path contains '1959-01-01'" | first %}
 <div>{{ p.content }}</div>
+        </li>
 
+        <li>
 {% assign p = site.posts | where_exp: "item", "item.path contains '2021-01-01'" | first %}
 <div>{{ p.content }}</div>
+        </li>
+
+  </ul>
+</div>
 
 <!--誘った方-->
 
