@@ -1,0 +1,21 @@
+This repository contains mixed licensing.
+
+## Default rule
+Unless otherwise specified, all content is © 2026 ogoriron. All rights reserved.
+
+## MIT licensed directories
+The following directories are licensed under the MIT License:
+- _includes/
+- _layouts/
+- assets/main.scss
+
+Each of these directories may contain a LICENSE file or SPDX identifiers.
+
+## All rights reserved content
+The following directories and files are NOT MIT licensed:
+- _posts/
+- root-level pages and documents
+
+## Precedence rule
+If a file contains an SPDX license identifier, that declaration overrides directory-level assumptions.
+If a directory contains its own LICENSE file, it applies only within that directory.

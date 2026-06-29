@@ -1,0 +1,6 @@
+  {% for post in site.posts %}
+    <li>
+      <span class="post-meta">{{ post.date | date: "%Y年%m月%d日" }}</span> - 
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}

@@ -1,0 +1,34 @@
+lang: "ja"
+title: オゴリロン - データに基づく割り勘・奢り論
+description: オゴリロン：割り勘・奢り論のデータを深掘り。昔は・・そんな都市伝説を解体！
+author: ogoriron
+theme: minima
+
+timezone: Asia/Tokyo
+minima: { date_format: "%Y年%m月%d日" }
+
+# postフォルダ内の生成されるURLを簡単化
+defaults:
+  - scope: { path: "", type: "posts" }
+    values:
+      permalink: "/posts/:year-:month-:day-:title/"
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# 独自キーワード: {{ site.p.cite }}
+p:
+  cite: "<cite class=\"source\">"
+  endcite: "</cite>"
+  gentei: "（限定アクセス）"
+
+# ハッシュタグ: _ アンダーバーありのフォルダ _tags にしないとheaderに表示されちゃう
+# また以下を書かないと機能しない
+collections: { tags: { output: true } }
+
+# GitHub Flavored Markdown にし表の記法を簡単に
+markdown: kramdown
+kramdown: { input: GFM }
+# 規定では改行2回なので上書き
+excerpt_separator: "<!-- more -->"

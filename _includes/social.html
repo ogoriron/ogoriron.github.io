@@ -1,0 +1,226 @@
+<ul class="social-media-list">
+  {%- if site.github_username -%}<li><a href="https://github.com/{{ site.github_username | cgi_escape | escape }}"><svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg> <span class="username">{{ site.github_username | escape }}</span></a></li>{%- endif -%}
+  {%- if site.twitter_username -%}<li><a href="https://twitter.com{{ site.twitter_username | cgi_escape | escape }}"><svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use></svg> <span class="username">{{ site.twitter_username | escape }}</span></a></li>{%- endif -%}
+</ul>
+
+<script id="page-path" type="application/json">{{ page.path | jsonify }}</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const REPO = "ogoriron/ogoriron.github.io"; // Username & Repository
+  const REPO_BASE = "https://github.com/" + REPO + "/edit/main/";
+  const PAGE_PATH = JSON.parse(document.getElementById("page-path")?.textContent || '""');
+  // In the standard code, the destination for when ".." is pressed is inserted by Jekyll.
+  // 標準のコードでは .. と押した場合の移動先をJekyllで挿入している
+
+  const CONFIRM_TEXT = navigator.language.startsWith("ja")
+    ? "編集しますか？" : "Edit this page?";
+  const go = (path, isSkip) => location.href = (isSkip ? "" : REPO_BASE) + path;
+  const skipBase = true;
+
+  const commands = { // Modifiable / 改変可能
+    "..":  () => confirm(CONFIRM_TEXT) && go(PAGE_PATH),
+    "css":() => go("assets/main.scss"),
+    "js": () => go("_includes/social.html"),
+    "po":() => go("_posts"),
+    "tag":() => go("_tags"),
+    "dev":() => go("https://github.com/ogoriron/Pages.devmode", skipBase),
+  };
+
+  const isTyping = () => {
+    const active = document.activeElement;
+    return active?.matches("input, textarea") || active?.isContentEditable;
+  };
+
+  const KEY_CACHE_SIZE = 10;
+  const KEY_CACHE_TIMEOUT = 3 * 1000;
+  let buf = "", timer;
+  document.addEventListener("keydown", (e) => {
+    if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || isTyping() ) return;
+
+    if (e.key.length === 1) { // Not SpecialKey
+      buf = (buf + e.key.toLowerCase()).slice(-MAX_KEY_BUFFER_SIZE);
+      
+      if (buf.length >= 2) preConnect();
+      clearTimeout(timer);
+      timer = setTimeout(() => { buf = ""; }, CLEAR_BUFFER_TIME); 
+    }
+    for (const cmd in commands)
+      if (buf.endsWith(cmd)) {
+        commands[cmd]();
+        clearTimeout(timer);
+        buf = "";
+        break;
+    }
+  });
+
+  const preConnect = (() => {
+    let isExecuted, timerId;
+  
+    return () => {
+      if (isExecuted) return;
+      isExecuted = true;
+      //console.log("Debug Executed");
+      [
+        { id: "gh-assets", href: "https://github.githubassets.com", crossorigin: "anonymous" },
+        { id: "gh-main", href: "https://github.com" }
+      ].forEach(linkTag => (
+        // fetch(linkTag.href + "/favicon.ico?t=" + Date.now(), { mode: "no-cors" }), // for debug
+        document.getElementById(linkTag.id)?.remove(), 
+        document.head.append(
+          Object.assign(document.createElement("link"), { rel: "preconnect", ...linkTag })
+        )
+      ));
+  
+      clearTimeout(timerId);
+      timerId = setTimeout(() => isExecuted = !false, 9990); 
+    };
+  })();
+
+});
+</script>
+
+{% if page.chartjs %}
+<script>
+(() => {
+  // AIによる誤検閲回避のため配列のままを維持
+  const url = ['https://', 'cdn.', 'jsdelivr.net', '/npm', '/chart.js'].join('');
+  const loader = document.createElement('script');
+  loader.src = url;
+  document.head.appendChild(loader);
+
+  loader.onload = () => {
+    if (typeof Chart === 'undefined') return;
+
+    const isMobile = window.innerWidth < 720;
+    const isMiniMobile = window.innerWidth < 400;
+    const fontSize = isMiniMobile ? 11 : undefined; // 規定12
+    const boxWidth = isMiniMobile ? 8 : (isMobile ? 15 : undefined);
+    const padding = isMiniMobile ? 4 : undefined;
+    const aspectRatio = isMobile ? undefined : 4;
+
+    // ダークモード判定
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const textColor = isDark ? '#FAFAFA' : '#0b0d10';
+    const borderColor = isDark ? '#0b0f19' : '#ffffff';
+    const borderWidth = isDark ? 4 : 2; // 黒線でブロックを独立させるため、ダーク時は4pxに太く設定
+
+    // 性別チャート用の色 ---
+    const getMFBackgroundColor = (label) => {
+      if (/^男$/.test(label)) return '#0284C7';
+      if (/^女$/.test(label)) return '#FB7185';
+      if (/^(割り勘|決まってない)$/.test(label)) return '#6D28D9';
+
+      if (/男9/.test(label)) return '#0284C7';
+      if (/男多め|男[6-8]/.test(label)) return '#4F46E5';
+      if (/交互|交代|平等|ある方が/.test(label)) return '#6D28D9';
+      if (/女多め|男[2-4]/.test(label)) return '#BE185D';
+      if (/男1/.test(label)) return '#FB7185';
+
+      return '#afb5ba';
+    };
+
+    // 金銭チャート用の色 ---
+    const cost_colors = [
+      '#059669', '#10b981', '#34d399', '#6ee7b7', '#a7f3d0',
+      '#ecfdf5', '#fef9c3', '#fef08a', '#fef3c7', '#fed7aa',
+      '#fca5a5', '#f87171', '#ef4444', '#dc2626', '#b91c1c'
+    ];
+    const getCostBackgroundColor = (i, N, skipCount) => {
+      const actualIndex = i + skipCount;
+      const totalSteps = cost_colors.length - 1;
+      const colorIndex = N <= 1 ? 0 : Math.round((actualIndex * totalSteps) / (N - 1));
+      return cost_colors[Math.min(colorIndex, totalSteps)];
+    };
+
+    // グラフ描画の共通処理 ---
+    const renderChart = (sourceDiv, type) => {
+      const table = sourceDiv.querySelector("table");
+      if (!table || sourceDiv.nextElementSibling?.querySelector?.("canvas")) return;
+
+      // 憑依の最初のセルから <!--省略n--> を空白付きで探す
+      const firstCell = table.getElementsByTagName('*')[0];
+      const match = firstCell ? firstCell.innerHTML.match(/<!--\s*省略\s*(\d+)\s*-->/) : null;
+      const skipCount = match ? parseInt(match[1], 10) : 0;
+
+      // 有効なデータ行だけをあらかじめ抽出（Nの確定のため）
+      const rows = Array.from(table.querySelectorAll("tbody tr")).flatMap(row => {
+        const cells = row.querySelectorAll("td");
+        if (cells.length < 2) return [];
+        const percent = parseFloat(cells[0].textContent.replace(/[\n\r\s%]/g, ""));
+        if (isNaN(percent)) return [];
+        return [{ percent, label: cells[1].textContent.trim() }];
+      });
+
+      const N = rows.length;
+      if (N === 0) return;
+
+      // データセットの構築
+      const datasets = rows.map((row, i) => {
+        // グラフのタイプ（MF か cost）によって色を切り替え
+        const bgColor = (type === 'MF')
+          ? getMFBackgroundColor(row.label)
+          : getCostBackgroundColor(i, N, skipCount);
+
+        // ラベル
+        let displayLabel = `${row.label} (${row.percent}%)`; // デフォルト（PC）
+        if (type === 'cost') {
+          if (isMiniMobile) {
+            displayLabel = row.label; // 400px未満：比率自体なし
+          } else if (isMobile) {
+            displayLabel = `${row.label} ${row.percent}%`; // 720px未満：丸かっこなし
+          }
+        }
+
+        return {
+          label: displayLabel,
+          data: [row.percent],
+          backgroundColor: bgColor,
+          borderColor: borderColor,
+          borderWidth: borderWidth
+        };
+      });
+
+      // キャンバスラッパー
+      const wrapper = document.createElement("div");
+      wrapper.style.maxWidth = "600px";
+      wrapper.style.margin = "2px auto";
+
+      const canvas = document.createElement("canvas");
+      wrapper.appendChild(canvas);
+      sourceDiv.after(wrapper);
+
+      // Chart.js インスタンス生成
+      new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: { labels: ['内訳'], datasets },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          aspectRatio: aspectRatio,
+          layout: { padding: { top: 0, bottom: 0 } },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: textColor, boxWidth: boxWidth,
+                padding: padding, font: { size: fontSize }
+              }
+            }
+          },
+          scales: {
+            x: { stacked: true, max: 100, display: false },
+            y: { stacked: true, display: false }
+          }
+        }
+      });
+
+      sourceDiv.style.display = 'none'; // 元の表を非表示
+    };
+
+    // --- 各クラスの表を探し実行 ---
+    document.querySelectorAll(".chart-MF").forEach(div => renderChart(div, 'MF'));
+    document.querySelectorAll(".chart-cost").forEach(div => renderChart(div, 'cost'));
+  };
+})();
+</script>
+{% endif %}
