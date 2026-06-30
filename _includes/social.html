@@ -13,9 +13,9 @@
   const jsdPlugin = ['/chart.js@4', '/chartjs-plugin-datalabels@2'];
 
   (async () => {
-    const loaders = jsdPlugin.map(createLoader); 
-    await Promise.all(loaders);
-    initCharts();
+    for (const path of jsdPlugin)
+      await createLoader(path);
+    initCharts();                                                
   })();
   
   function createLoader(path) {
