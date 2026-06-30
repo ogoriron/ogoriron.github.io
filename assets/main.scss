@@ -7,6 +7,8 @@
 @import "minima";
 
 :root {
+  --dark-bg-color: #0b0d10;
+  --dark-txt-color: #e0e0e0;
   --dark-accent-color: #00b099;
 }
 
@@ -172,11 +174,11 @@
 
 /* ダークモード汎用 */
 @media (prefers-color-scheme: dark) {
-  body { background-color: #0b0d10; color: #e0e0e0; }
+  body { background-color: --dark-bg-color; color: --dark-txt-color; }
   .site-header { border-top: 0; border-bottom: 0.5px solid #2f343a; background-color: #000; }
-  .page-content { background-color: #0b0d10; color: #e0e0e0; }
+  .page-content { background-color: --dark-bg-color; color: --dark-txt-color; }
   .site-footer { border-top: 0.5px solid #363c43; background-color: #050607; }
-  .site-title, .site-nav .page-link { color: #e0e0e0; }
+  .site-title, .site-nav .page-link { color: --dark-txt-color; }
   a, a:visited { color: #8ab4f8; }
   a:hover { color: #c4daff !important; text-decoration: none; }
   .post-content a:hover { text-decoration: underline; } /* 本文では下線 */
@@ -197,7 +199,7 @@ table {
 }
 table th, table td {
   border-bottom: 1px solid #2d2d2d;
-  color: #e0e0e0;
+  color: --dark-txt-color;
   border-color: #222323;
 }
 table th:first-child,
