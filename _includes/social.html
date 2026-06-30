@@ -107,8 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 性別チャート用の色 ---
     const getMFBackgroundColor = (label) => {
-      if (/^男(\s|$)/.test(label)) return '#0284C7';
-      if (/^女(\s|$)/.test(label)) return '#FB7185';
+      if (/^(男|はい)(\s|$)/.test(label)) return '#0284C7';
+      if (/^(女|いいえ)(\s|$)/.test(label)) return '#FB7185';
       if (/^(割り勘|決まってない)$/.test(label)) return '#6D28D9';
 
       if (/男9/.test(label)) return '#0284C7';
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (/女多め|男[2-4]/.test(label)) return '#BE185D';
       if (/男1/.test(label)) return '#FB7185';
 
-      return '#afb5ba';
+      return '#94A3B8';
     };
 
     // 金銭チャート用の色 ---
