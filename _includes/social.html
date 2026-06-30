@@ -88,6 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
   loader.src = url;
   document.head.appendChild(loader);
 
+  const styles = getActualStyles();
+  const borderColor = styles.bg;
+  const textColor = styles.text;
+
   loader.onload = () => {
     if (typeof Chart === 'undefined') return;
 
@@ -97,11 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const boxWidth = isMiniMobile ? 8 : (isMobile ? 15 : undefined);
     const padding = isMiniMobile ? 4 : undefined;
 
-    // ダークモード判定
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const textColor = isDark ? '#FAFAFA' : '#0b0d10';
-    const borderColor = isDark ? '#0b0f19' : '#ffffff';
-    const borderWidth = isDark ? 4 : 2; // 黒線でブロックを独立させるため、ダーク時は4pxに太く設定
+    const isDark = /^rgb\(\s*[0-3]/i.test(borderColor);
+    const borderWidth = isDark ? 4 : 2;// 黒線でブロックを独立させるため、ダーク時は4pxに太く設定
 
     // 性別チャート用の色 ---
     const getMFBackgroundColor = (label) => {
@@ -160,12 +161,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // データセットの構築
       const datasets = rows.map((row, i) => {
-        // グラフのタイプ（MF か cost）によって色を切り替え
         const bgColor = (type === 'MF')
           ? getMFBackgroundColor(row.label)
           : getCostBackgroundColor(i, N, skipCount);
 
-        // ラベル
         let displayLabel = `${row.label} (${row.percent}%)`; // デフォルト（PC）
         if (type === 'cost') {
           if (isMiniMobile) {
@@ -184,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
-      // キャンバスラッパー
       const wrapper = document.createElement("div");
       wrapper.style.maxWidth = "600px";
       wrapper.style.margin = "2px auto";
@@ -193,7 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.appendChild(canvas);
       sourceDiv.after(wrapper);
 
-      // Chart.js インスタンス生成
       new Chart(canvas.getContext('2d'), {
         type: 'bar',
         data: { labels: ['内訳'], datasets },
@@ -259,6 +256,38 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
+      // 行数によるレイアウトの分離と最大値の決定
+      const isHorizontal = labels.length <= 2;
+      let maxPercent = 50;
+
+      if (isHorizontal) {
+        // 2行以下の場合は横型（水平）とし、最大値は100%固定
+        maxPercent = 100;
+      } else {
+        // 3行以上の場合は動的に最大値を計算
+        let maxRowSum = 0;
+        labels.forEach((_, rowIndex) => {
+          const rowSum = datasets.reduce((sum, dataset) => sum + (dataset.data.at(rowIndex) || 0), 0);
+          if (rowSum > maxRowSum) maxRowSum = rowSum;
+        });
+
+        if (maxRowSum >= 50) {
+          maxPercent = Math.ceil((maxRowSum + 20) / 10) * 10;
+        }
+      }
+
+      // テーマ対応用のグリッド線・境界線の色定義
+      const gridColor = textColor + '22';
+
+      // チャートの向きに応じた軸設定の切り替え
+      const scalesConfig = isHorizontal ? {
+        x: { stacked: true, max: maxPercent, ticks: { color: textColor, callback: v => v + '%' }, grid: { color: gridColor }, border: { color: gridColor } },
+        y: { stacked: true, ticks: { color: textColor }, grid: { color: gridColor }, border: { color: gridColor } }
+      } : {
+        x: { stacked: true, ticks: { color: textColor }, grid: { color: gridColor }, border: { color: gridColor } },
+        y: { stacked: true, max: maxPercent, ticks: { color: textColor, callback: v => v + '%' }, grid: { color: gridColor }, border: { color: gridColor } }
+      };
+
       const canvas = document.createElement("canvas");
       const wrapper = document.createElement("div");
       wrapper.style = "max-width:600px; margin:24px auto;";
@@ -269,16 +298,14 @@ document.addEventListener("DOMContentLoaded", () => {
         type: 'bar',
         data: { labels, datasets },
         options: {
+          indexAxis: isHorizontal ? 'y' : 'x',
           responsive: true,
-          aspectRatio: isMobile ? 1.3 : 1.8,
+          aspectRatio: isMobile ? 1.3 : (isHorizontal ? 3.5 : 1.8), // 横型時は潰れないようアスペクト比を調整
           plugins: {
             title: { display: true, text: chartTitle, color: textColor, font: { size: 14, weight: 'bold' } },
             legend: { position: 'bottom', labels: { color: textColor, boxWidth: boxWidth, padding: padding, font: { size: fontSize } } }
           },
-          scales: {
-            x: { stacked: true, ticks: { color: textColor } },
-            y: { stacked: true, max: 50, ticks: { color: textColor, callback: v => v + '%' } }
-          }
+          scales: scalesConfig
         }
       });
       sourceDiv.style.display = 'none';
@@ -289,6 +316,21 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".chart-cost").forEach(div => renderChart(div, 'cost'));
     document.querySelectorAll(".chart-vstacked").forEach(div => renderVStacked(div));
   };
+
+  function getActualStyles() {
+    const firstChart = document.querySelector('.chart-MF, .chart-cost, .chart-vstacked, table');
+    let el = firstChart, actualBg, actualText;
+
+    while (el = el?.parentElement) {
+      const s = getComputedStyle(el);
+      if (!actualBg || actualBg === 'transparent' || actualBg.endsWith(', 0)')) actualBg = s.backgroundColor;
+      if (!actualText) actualText = s.color;
+      if (actualBg && actualBg !== 'transparent' && !actualBg.endsWith(', 0)') && actualText) break;
+      if (el === document.body) break;
+    }
+
+    return { bg: actualBg, text: actualText };
+  }
 })();
 </script>
 {% endif %}
