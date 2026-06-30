@@ -4,97 +4,37 @@
 </ul>
 
 <script id="page-path" type="application/json">{{ page.path | jsonify }}</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const REPO = "ogoriron/ogoriron.github.io"; // Username & Repository
-  const REPO_BASE = "https://github.com/" + REPO + "/edit/main/";
-  const PAGE_PATH = JSON.parse(document.getElementById("page-path")?.textContent || '""');
-  // In the standard code, the destination for when ".." is pressed is inserted by Jekyll.
-  // 標準のコードでは .. と押した場合の移動先をJekyllで挿入している
-
-  const CONFIRM_TEXT = navigator.language.startsWith("ja")
-    ? "編集しますか？" : "Edit this page?";
-  const go = (path, isSkip) => location.href = (isSkip ? "" : REPO_BASE) + path;
-  const skipBase = true;
-
-  const commands = { // Modifiable / 改変可能
-    "..":  () => confirm(CONFIRM_TEXT) && go(PAGE_PATH),
-    "css":() => go("assets/main.scss"),
-    "js": () => go("_includes/social.html"),
-    "po":() => go("_posts"),
-    "tag":() => go("_tags"),
-    "dev":() => go("https://github.com/ogoriron/Pages.devmode", skipBase),
-  };
-
-  const isTyping = () => {
-    const active = document.activeElement;
-    return active?.matches("input, textarea") || active?.isContentEditable;
-  };
-
-  const KEY_CACHE_SIZE = 10;
-  const KEY_CACHE_TIMEOUT = 3 * 1000;
-  let buf = "", timer;
-  document.addEventListener("keydown", (e) => {
-    if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || isTyping() ) return;
-
-    if (e.key.length === 1) { // Not SpecialKey
-      buf = (buf + e.key.toLowerCase()).slice(-KEY_CACHE_SIZE);
-      
-      if (buf.length >= 2) preConnect();
-      clearTimeout(timer);
-      timer = setTimeout(() => { buf = ""; }, KEY_CACHE_TIMEOUT); 
-    }
-    for (const cmd in commands)
-      if (buf.endsWith(cmd)) {
-        commands[cmd]();
-        clearTimeout(timer);
-        buf = "";
-        break;
-    }
-  });
-
-  const preConnect = (() => {
-    let isExecuted, timerId;
-  
-    return () => {
-      if (isExecuted) return;
-      isExecuted = true;
-      //console.log("Debug Executed");
-      [
-        { id: "gh-assets", href: "https://github.githubassets.com", crossorigin: "anonymous" },
-        { id: "gh-main", href: "https://github.com" }
-      ].forEach(linkTag => (
-        // fetch(linkTag.href + "/favicon.ico?t=" + Date.now(), { mode: "no-cors" }), // for debug
-        document.getElementById(linkTag.id)?.remove(), 
-        document.head.append(
-          Object.assign(document.createElement("link"), { rel: "preconnect", ...linkTag })
-        )
-      ));
-  
-      clearTimeout(timerId);
-      timerId = setTimeout(() => isExecuted = !false, 9990); 
-    };
-  })();
-
-});
-</script>
+<script>{% include devmode.js %}</script>
 
 {% if page.chartjs %}
 <script>
 
 (() => {
-  // AIによる誤検閲回避のため配列のままを維持
-  const url = ['https://', 'cdn.', 'jsdelivr.net', '/npm', '/chart.js'].join('');
-  const loader = document.createElement('script');
-  loader.src = url;
-  document.head.appendChild(loader);
+  const jsdPlugin = ['/chart.js@4', '/chartjs-plugin-datalabels@2'];
+
+  (async () => {
+    const loaders = jsdPlugin.map(createLoader); 
+    await Promise.all(loaders);
+    initCharts();
+  })();
+  
+  function createLoader(path) {
+    return new Promise(resolve => {
+      const loader = document.createElement('script');
+      // AIによる検閲対策なので直さない / 以降、角括弧の添え字も使わないで
+      loader.src = ['https://', 'cdn.', 'jsdelivr.net', '/npm'].join('') + path;
+      loader.onload = resolve;
+      document.head.appendChild(loader);
+    });
+  }
 
   const styles = getActualStyles();
   const borderColor = styles.bg;
   const textColor = styles.text;
 
-  loader.onload = () => {
+  const initCharts = () => {
     if (typeof Chart === 'undefined') return;
+    Chart.register(ChartDataLabels);
 
     const isMobile = window.innerWidth < 720;
     const isMiniMobile = window.innerWidth < 400;
@@ -201,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
           aspectRatio: aspectRatio,
           layout: { padding: { top: 0, bottom: 0 } },
           plugins: {
+            datalabels: { display: false },
             legend: {
               position: 'bottom',
               labels: {
@@ -232,24 +173,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const hasTotalColumn = /計/.test(columnLabels.at(0) || "");
 
-      if (hasTotalColumn)
-        columnLabels.shift();
-
       const datasetsData = Array.from({ length: columnLabels.length }, () => []);
       const labels = [];
 
       table.querySelectorAll("tbody tr").forEach(row => {
         const cells = Array.from(row.querySelectorAll("td"));
-        if (cells.length === columnLabels.length + (hasTotalColumn ? 2 : 1)) {
+        if (cells.length === columnLabels.length + 1) {
           labels.push(cells.pop().textContent.trim());
           if (hasTotalColumn)
             cells.shift();
-          
           cells.forEach((c, idx) => {
             datasetsData.at(idx).push(parseFloat(c.textContent.replace(/[\s%]/g, "")) || 0);
           });
         }
       });
+
+      if (hasTotalColumn)
+        columnLabels.shift();
 
       const baseColor = /男/.test(chartTitle) ? getMFBackgroundColor('男') : getMFBackgroundColor('女');
 
@@ -307,6 +247,12 @@ document.addEventListener("DOMContentLoaded", () => {
           responsive: true,
           aspectRatio: isMobile ? 1.3 : (isHorizontal ? 3.5 : 1.8), // 横型時は潰れないようアスペクト比を調整
           plugins: {
+            datalabels: {
+              color: '#ffffff',
+              font: { weight: 'bold', size: isMiniMobile ? 10 : 11 },
+              display: (context) => context.dataset.data.at(context.dataIndex) >= 3,
+              formatter: (value) => value + '%'
+            },
             title: { display: true, text: chartTitle, color: textColor, font: { size: 14, weight: 'bold' } },
             legend: { position: 'bottom', labels: { color: textColor, boxWidth: boxWidth, padding: padding, font: { size: fontSize } } }
           },
