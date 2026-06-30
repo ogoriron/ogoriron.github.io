@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!table || sourceDiv.nextElementSibling?.querySelector?.("canvas")) return;
 
       const ths = Array.from(table.querySelectorAll("thead th"));
-      if (ths.length < 3) return; 
+      if (ths.length < 2) return;
 
       const chartTitle = ths.pop().textContent.trim();
       const columnLabels = ths.map(th => th.textContent.replace(/\s*\(%\)/, '').trim());
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       table.querySelectorAll("tbody tr").forEach(row => {
         const cells = Array.from(row.querySelectorAll("td"));
-        if (cells.length === ths.length + 1) {
+        if (cells.length === columnLabels.length + 1) {
           labels.push(cells.pop().textContent.trim());
           cells.forEach((c, idx) => {
             const targetDataArray = datasetsData.at(idx);
