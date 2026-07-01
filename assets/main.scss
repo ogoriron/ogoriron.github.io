@@ -262,6 +262,33 @@ a[href^="https://"]:not([href*="ogoriron.github.io"])::after {
   }
 }
 
+aside {
+  font-size: 0.88em;
+  line-height: 1.5;
+
+  position: relative;
+  margin: 10px 5px;
+  padding: 10px 8px;
+  border-radius: 8px;
+  border: 2px solid #8a99a8; /* ダークでも視認性がいいグレー */
+  @media (max-width: 600px) {
+    margin: 2px;
+    padding: 4px 2px;
+  }
+}
+aside::before {
+  content: "コラム";
+  position: absolute;
+  top: -10px;        /* 文字が小さくなった分、上に浮き出る位置を微調整 */
+  left: 15px;
+  padding: 1px 10px; /* バッジの余白も少しタイトに */
+  font-size: 0.7em;  /* バッジ内の文字もさらに小さくしてシャープに */
+  font-weight: bold;
+  border-radius: 3px;
+  background-color: #4a5568;
+  color: #fafafa;
+}
+
 /* タグクラウド用 */
 :root {
   --bg-cloud-badge: #fafafa;
