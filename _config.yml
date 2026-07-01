@@ -23,6 +23,7 @@ p:
   endcite: "</cite>"
   side: "<aside>"
   endside: "</aside>"
+  auth: "（要ログイン）"
   gentei: "（限定アクセス）"
 
 # ハッシュタグ: _ アンダーバーありのフォルダ _tags にしないとheaderに表示されちゃう
