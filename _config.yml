@@ -21,6 +21,8 @@ plugins:
 p:
   cite: "<cite class=\"source\">"
   endcite: "</cite>"
+  side: "<aside>"
+  endside: "</aside>"
   gentei: "（限定アクセス）"
 
 # ハッシュタグ: _ アンダーバーありのフォルダ _tags にしないとheaderに表示されちゃう
