@@ -14,5 +14,3 @@ permalink: /list/
     </li>
 {% include list-post.html %}
 </ul>
-
-テーマバージョン: {{ jekyll.version }}
