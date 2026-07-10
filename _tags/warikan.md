@@ -1,6 +1,7 @@
 ---
 layout: tag
 chartjs: true
+title: 割り勘
 tag: 割り勘
 permalink: /tags/warikan/
 ---
