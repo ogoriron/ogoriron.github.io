@@ -1,6 +1,7 @@
 ---
 layout: tag
 chartjs: true
+title: 統計出産男女
 tag: 統計出産男女
 permalink: /tags/toukei-baby-danjo/
 ---
