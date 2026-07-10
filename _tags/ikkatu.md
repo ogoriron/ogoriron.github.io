@@ -1,6 +1,7 @@
 ---
 layout: tag
 chartjs: true
+title: 一括会計
 tag: 一括会計
 permalink: /tags/ikkatu/
 ---
