@@ -29,13 +29,13 @@ description: "日本における割り勘、奢り奢られ論に関するデー
 
 <!--誘った方-->
 
-### 関連
+### 関連項目
 
 - 就業率
   - 給与
 - [出産費用](baby/)
 
-{% include tag-cloud.html %}
+{% include x-tag-cloud.html %}
 
 [記事一覧](list)
 
