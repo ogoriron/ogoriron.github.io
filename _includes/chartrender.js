@@ -1,6 +1,3 @@
-{% if page.chartjs %}
-<script>
-
 (() => {
   const jsdPlugin = ['/chart.js@4', '/chartjs-plugin-datalabels@2'];
 
@@ -275,7 +272,3 @@
     return { bg: actualBg, text: actualText };
   }
 })();
-
-  
-</script>
-{% endif %}
