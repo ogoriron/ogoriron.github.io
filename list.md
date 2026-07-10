@@ -7,11 +7,11 @@ description: "奢り奢られ、割り勘のデータ記事の一覧ページで
 
 **オゴリロンの記事一覧だよっ**
 
-{% include tag-cloud.html %}
+{% include x-tag-cloud.html %}
 
 <ul>
     <li>
       <a href="../baby/">出産費用</a>
     </li>
-{% include list-post.html %}
+{% include x-list-post.html %}
 </ul>
