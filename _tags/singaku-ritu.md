@@ -1,6 +1,7 @@
 ---
 layout: tag
 chartjs: true
+title: 進学率
 tag: 進学率
 permalink: /tags/singaku-ritu/
 ---
