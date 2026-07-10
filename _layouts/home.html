@@ -1,7 +1,15 @@
 ---
 layout: default
 ---
+{% comment %}
+SPDX-License-Identifier: MIT
+Copyright (c) 2016-2025 GitHub, Inc. and jekyll/minima contributors
+Copyright (c) 2026 ogoriron
 
+https://github.com/jekyll/minima/blob/master/_layouts/home.html
+at 2025-04-26
+{% endcomment %}
+<head>
 <div class="home">
   {%- if page.title -%}
     <h1 class="page-heading">{{ page.title }}</h1>
@@ -15,6 +23,7 @@ layout: default
   {% else %}
     {% assign posts = site.posts %}
   {% endif %}
+  
 
   {%- if posts.size > 0 -%}
     {%- if page.list_title -%}
