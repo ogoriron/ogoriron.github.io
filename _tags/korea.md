@@ -1,6 +1,7 @@
 ---
 layout: tag
 chartjs: true
+title: 韓国の割り勘
 tag: 韓国の割り勘
 permalink: /tags/korea/
 ---
