@@ -1,6 +1,7 @@
 ---
 layout: tag
 chartjs: true
+title: お見合い
 tag: お見合い
 permalink: /tags/omiai/
 ---
