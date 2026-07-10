@@ -11,4 +11,4 @@ permalink: /tags/ogori/
 * 目上が奢る（これは減ってきた）
 * 接待で奢る
 
-- *<a href="warikan">割り勘</a>*も参照
+- *<a href="../warikan">割り勘</a>*も参照
