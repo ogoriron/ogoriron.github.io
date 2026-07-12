@@ -2,18 +2,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const REPO = "ogoriron/ogoriron.github.io"; // Username & Repository
   const REPO_BASE = "https://github.com/" + REPO + "/edit/main/";
   const PAGE_PATH = JSON.parse(document.getElementById("page-path")?.textContent || '""');
-  // In the standard code, the destination for when ".." is pressed is inserted by Jekyll.
-  // 標準のコードでは .. と押した場合の移動先をJekyllで挿入している
+  // {% comment %} In the standard code, the destination for when ".." is pressed is inserted by Jekyll.
+  // 標準のコードでは .. と押した場合の移動先をJekyllで挿入している {% endcomment %}
 
   const CONFIRM_TEXT = navigator.language.startsWith("ja")
     ? "編集しますか？" : "Edit this page?";
   const go = (path, isSkip) => location.href = (isSkip ? "" : REPO_BASE) + path;
   const skipBase = true;
 
-  const commands = { // Modifiable / 改変可能
+  const commands = { // {% comment %} Modifiable / 改変可能 {% endcomment %}
     "..":  () => confirm(CONFIRM_TEXT) && go(PAGE_PATH),
     "css":() => go("assets/main.scss"),
-    "js": () => go("_includes/social.html"),
+    "js": () => go("_includes/chartrender.js"),
     "po":() => go("_posts"),
     "tag":() => go("_tags"),
     "dev":() => go("https://github.com/ogoriron/Pages.devmode", skipBase),
