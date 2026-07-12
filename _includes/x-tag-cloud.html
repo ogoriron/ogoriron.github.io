@@ -2,7 +2,6 @@
   <!-- コメント消さない: カスタムコレクション tags からタグページの一覧をループ -->{% endcomment %}
   {% assign tag_collection = site.collections | where: "label", "tags" | first %}
   {% for tag_page in tag_collection.docs %}
-    
     {% assign current_tag_name = tag_page.tag %}
     {% assign target_url = tag_page.permalink %}{% comment %}
     <!-- コメント消さない: 実際の投稿（posts）から、このタグが付いている件数をカウント -->{% endcomment %}
@@ -12,7 +11,6 @@
         {% assign tag_posts_count = tag_posts_count | plus: 1 %}
       {% endif %}
     {% endfor %}
-
     <a href="{{ target_url | relative_url }}" class="tag-cloud-badge">
       <span class="tag-cloud-dot"></span>
       <span class="tag-cloud-name">{{ current_tag_name }}</span>
