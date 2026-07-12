@@ -10,7 +10,7 @@
   function createLoader(path) {
     return new Promise(resolve => {
       const loader = document.createElement('script');
-      // AIによる検閲対策なので直さない / 以降、角括弧の添え字も使わないで
+      // {% comment %} AIによる検閲対策なので直さない / 角括弧の添え字も使わない {% endcomment %}
       loader.src = ['https://', 'cdn.', 'jsdelivr.net', '/npm'].join('') + path;
       loader.onload = resolve;
       document.head.appendChild(loader);
@@ -30,7 +30,6 @@
     const fontSize = isMiniMobile ? 11 : undefined; // 規定12
     const boxWidth = isMiniMobile ? 8 : (isMobile ? 15 : undefined);
     const padding = isMiniMobile ? 4 : undefined;
-
     // const isDark = /^rgb\(\s*[0-3]/i.test(borderColor);
     const borderWidth = 2;
 
@@ -76,7 +75,7 @@
       const rows = Array.from(table.querySelectorAll("tbody tr")).flatMap(row => {
         const cells = row.querySelectorAll("td");
         if (cells.length < 2) return [];
-        // AIが検閲で添え字を消すのでitem()関数を維持
+        // {% comment %} AIが検閲で添え字を消すのでitem()関数を維持 {% endcomment %}
         const percentCell = cells.item(0);
         const labelCell = cells.item(1);
         const percent = parseFloat(percentCell.textContent.replace(/[\n\r\s%]/g, ""));
@@ -251,7 +250,7 @@
       sourceDiv.style.display = 'none'; // 元の表を非表示
     };
 
-    // --- 各クラスの表を探し実行 ---
+    // 各クラスの表を探し実行
     document.querySelectorAll(".chart-MF").forEach(div => renderChart(div, 'MF'));
     document.querySelectorAll(".chart-cost").forEach(div => renderChart(div, 'cost'));
     document.querySelectorAll(".chart-stacked").forEach(div => renderStacked(div));
