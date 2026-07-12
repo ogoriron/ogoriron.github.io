@@ -1,4 +1,4 @@
-  {% for post in site.posts %}
+  {% for post in site.posts %}{% comment %}記事一覧から読み込む{% endcomment %}
     <li>
       <span class="post-meta">{{ post.date | date: "%Y年%m月%d日" }}</span> - 
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
