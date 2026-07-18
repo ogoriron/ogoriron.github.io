@@ -12,7 +12,7 @@
       {%- assign tag_posts_count = tag_posts_count | plus: 1 -%}
     {%- endif -%}
   {%- endfor -%}
-  <a href="{{ target_url | relative_url }}" class="tag-cloud-badge">
+  {% if forloop.first %}  {% endif %}<a href="{{ target_url | relative_url }}" class="tag-cloud-badge">
     <span class="tag-cloud-dot"></span>
     <span class="tag-cloud-name">{{ current_tag_name }}</span>
     <span class="tag-cloud-count">{{ tag_posts_count }}</span>
