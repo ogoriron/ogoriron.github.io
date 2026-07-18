@@ -1,0 +1,27 @@
+{% comment %} 変数の初期化（ページ内で初回のみ実行） {% endcomment %}
+{% unless page_fn_list %}
+  {% assign page_fn_list = "" | split: "," %}
+{% endunless %}
+
+{% if include.mode == "render" %}
+  {% comment %} 【2: 脚注位置での出力モード】たまったリストを上から順に連番出力 {% endcomment %}
+  <ul class="custom-footnotes">
+    {% for note_text in page_fn_list %}
+      {% assign num = forloop.index %}
+      <li>
+        <span id="note{{ num }}"></span>
+        {{ num }}. {{ note_text }} 
+        <a href="#ref{{ num }}">↩</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% else %}
+  {% comment %} 【1: 本文での登録モード】呼び出されるたびに連番を増やしてテキストを記憶 {% endcomment %}
+  {% assign current_num = page_fn_list.size | plus: 1 %}
+  <a href="#note{{ current_num }}" id="ref{{ current_num }}" class="fn-ref">[{{ current_num }}]</a>
+  
+  {% comment %} テキストを配列に蓄積 {% endcomment %}
+  {% assign text_array = include.text | default: "" | split: "###" %}
+  {% assign page_fn_list = page_fn_list | concat: text_array %}
+{% endif %}
