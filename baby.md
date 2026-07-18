@@ -152,7 +152,7 @@ chartjs: true
 {{ site.p.side }}
 少子化というけれど。
 
-主要7か国で、10代の死因の1位が自殺なのは日本だけ。{% capture ref %}コメントテスト{% include x-footnote.html content=ref %}
+主要7か国で、10代の死因の1位が自殺なのは日本だけ。{% capture ref %}コメントテスト{% endcapture %}{% include x-footnote.html content=ref %}
 
 {% include x-footnote.html mode="render" %}
 {{ site.p.endside }}
