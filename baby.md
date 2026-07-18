@@ -111,6 +111,8 @@ chartjs: true
 その後、帝王切開まで低価格に（2016年の5%負担から、2025年に完全無償）。爆増し始め、2024年には出産の66.9%が帝王切開になってしまい、手術の種類として韓国3位となるし、母親の回復も遅い、また母親の死亡率も11倍になる。{% capture ref %}{{ site.p.cite }} Oh Kyung-muk. [South Korea's Cesarean Rate Surges to Record High (韓国の帝王切開が過去最高)](https://www.chosun.com/english/national-en/2025/12/08/NPB3ZL6VGFEWDLGOBTMXRTFDUQ/), *CHOSUN*, 2025年12月08日。{{ site.p.endcite }}{% endcapture %}
 {% include footnote.html content=ref %}無痛分娩を含む自然分娩は残りの33.1%となり、増えなくなったね笑 逆に母親の命も危険だし、適切な帝王のための規制をかける水準では。
 
+{% include footnote.html mode="render" %}
+
 {{ site.p.endside }}
 
 ### 育児
