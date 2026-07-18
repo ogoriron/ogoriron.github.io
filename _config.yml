@@ -21,7 +21,7 @@ plugins:
 p:
   cite: "<cite class=\"source\">"
   endcite: "</cite>"
-  side: "<aside>"
+  side: "<aside markdown=\"1\">"
   endside: "</aside>"
   auth: "（要ログイン）"
   gentei: "（限定アクセス）"
