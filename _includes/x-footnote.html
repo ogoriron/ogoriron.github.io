@@ -5,19 +5,19 @@
 
 {% if include.mode == "render" %}
   {% comment %} 【2: 脚注位置での一括出力モード】 {% endcomment %}
-  <ul class="custom-footnotes">
+  <ol class="custom-footnotes">
     {% if ref_contents_string %}
       {% assign refs_array = ref_contents_string | split: "|||REF_SPLIT|||" %}
       {% for note_content in refs_array %}
         {% if note_content != blank %}
           <li>
             <span id="note{{ forloop.index }}"></span>
-            [<a href="#ref{{ forloop.index }}" class="fn-back">^{{ forloop.index }}</a>]: {{ note_content | strip }}
+            [<a href="#ref{{ forloop.index }}" class="fn-back">^</a>]: {{ note_content | strip }}
           </li>
         {% endif %}
       {% endfor %}
     {% endif %}
-  </ul>
+  </ol>
 
   {% comment %} 出力したらカウンターと蓄積文字列をリセットする {% endcomment %}
   {% assign page_ref_counter = 0 %}
