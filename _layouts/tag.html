@@ -5,36 +5,37 @@ layout: default
 
 <div class="tag-page-wrapper">
 
-  <!-- 見出し：複数の場合はカンマ区切りで表示 -->
+  {%- comment -%} 見出し：複数の場合はカンマ区切りで表示 {%- endcomment -%}
   <h1 class="page-heading">
     <span class="tag-page-heading-dot"></span>
     タグ #{% if page.tags %}{{ page.tags | join: ", " }}{% else %}{{ page.tag }}{% endif %}
   </h1>
-  <p></p>{{ content }}</p>
+  <p>{{ content }}</p>
 
   <ul class="post-list">
-    <!-- site.postsから1つずつ最新順にチェック -->
+    {%- comment -%} site.postsから1つずつ最新順にチェック {%- endcomment -%}
     {% for post in site.posts %}
       
-      <!-- 現在の記事を表示するかどうかのフラグ -->
+      {%- comment -%} 現在の記事を表示するかどうかのフラグ {%- endcomment -%}
       {% assign display_post = false %}
       
-      <!-- ページ側で設定された複数タグ（page.tags）をループして、記事のタグと照合 -->
+      {%- comment -%} ページ側で設定された複数タグ（page.tags）をループして、記事のタグと照合 {%- endcomment -%}
       {% if page.tags %}
         {% for target_tag in page.tags %}
           {% if post.tags contains target_tag %}
             {% assign display_post = true %}
-            {% break %} <!-- 1つでもマッチしたらループを抜ける（重複防止） -->
+            {%- comment -%} 1つでもマッチしたらループを抜ける（重複防止） {%- endcomment -%}
+            {% break %} 
           {% endif %}
         {% endfor %}
       {% else %}
-        <!-- 単数指定（page.tag）の場合の互換性ケア -->
+        {%- comment -%} 単数指定（page.tag）の場合の互換性ケア {%- endcomment -%}
         {% if post.tags contains page.tag %}
           {% assign display_post = true %}
         {% endif %}
       {% endif %}
 
-      <!-- マッチした記事だけを描画 -->
+      {%- comment -%} マッチした記事だけを描画 {%- endcomment -%}
       {% if display_post %}
         <li>
           <span class="post-meta">{{ post.date | date: "%Y年%m月%d日" }}</span>
@@ -44,7 +45,7 @@ layout: default
             </a>
           </h2>
 
-          <!-- 抜粋・全文の条件分岐 -->
+          {%- comment -%} 抜粋・全文の条件分岐 {%- endcomment -%}
           <div class="post-excerpt" style="margin-bottom: 12px;">
             {% assign content_size = post.content | strip_html | strip_newlines | size %}
             {% assign excerpt_size = post.excerpt | strip_html | strip_newlines | size %}
@@ -59,14 +60,14 @@ layout: default
             {% endif %}
           </div>
           
-          <!-- 記事に紐づく他タグ -->
+          {%- comment -%} 記事に紐づく他タグ {%- endcomment -%}
           {% if post.tags %}
             <div class="tag-cloud-wrapper" style="margin: 12px 0 4px 0;">
               {% for tag_item in post.tags %}
-                <!-- ① 一旦フォールバック用のURLを作る -->
+                {%- comment -%} ① 一旦フォールバック用のURLを作る {%- endcomment -%}
                 {% assign sub_target_url = '/tags/' | append: (tag_item | slugify) | append: '/' %}
                 
-                <!-- ② _tags フォルダ内の設定ファイルから正しい permalink を探す -->
+                {%- comment -%} ② _tags フォルダ内の設定ファイルから正しい permalink を探す {%- endcomment -%}
                 {% for page_item in site.tags %}
                   {% if page_item.tag == tag_item %}
                     {% assign sub_target_url = page_item.permalink %}
@@ -74,7 +75,7 @@ layout: default
                   {% endif %}
                 {% endfor %}
 
-                <!-- ③ 安全になったURLでリンクを出力 -->
+                {%- comment -%} ③ 安全になったURLでリンクを出力 {%- endcomment -%}
                 <a href="{{ sub_target_url | relative_url }}" class="tag-cloud-badge">
                   <span class="tag-cloud-dot"></span>
                   {{ tag_item }}
