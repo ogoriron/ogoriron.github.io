@@ -8,16 +8,18 @@
       {% assign refs_array = ref_contents_string | split: "|||REF_SPLIT|||" %}
       {% for note_content in refs_array %}
         {% if note_content != blank %}
-          <li id="note{{ forloop.index }}">
-            [<a href="#ref{{ forloop.index }}" class="fn-back">^</a>]: {{ note_content | strip }}
+          {% comment %} 配列数から逆算し通し番号を算出 {% endcomment %}
+          {% assign start_index = page_ref_counter | minus: refs_array.size %}
+          {% assign current_note_num = start_index | plus: forloop.index %}
+          <li id="note{{ current_note_num }}">
+            [<a href="#ref{{ current_note_num }}" class="fn-back">^</a>]: {{ note_content | strip }}
           </li>
         {% endif %}
       {% endfor %}
     {% endif %}
   </ol>
 
-  {% comment %} 出力したらカウンターと蓄積文字列をリセットする {% endcomment %}
-  {% assign page_ref_counter = nil %}
+  {% comment %} 出力後、蓄積文字列のみ初期化 {% endcomment %}
   {% assign ref_contents_string = nil %}
 
 {% else -%}
