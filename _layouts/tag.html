@@ -2,7 +2,6 @@
 layout: default
 ---
 {% include x-tag-cloud.html %}
-
 <div class="tag-page-wrapper">
 
   {%- comment -%} 見出し：複数の場合はカンマ区切りで表示 {%- endcomment -%}
@@ -14,29 +13,26 @@ layout: default
 
   <ul class="post-list">
     {%- comment -%} site.postsから1つずつ最新順にチェック {%- endcomment -%}
-    {% for post in site.posts %}
-      
+    {% for post in site.posts -%}
       {%- comment -%} 現在の記事を表示するかどうかのフラグ {%- endcomment -%}
-      {% assign display_post = false %}
-      
+      {%- assign display_post = false -%}
       {%- comment -%} ページ側で設定された複数タグ（page.tags）をループして、記事のタグと照合 {%- endcomment -%}
-      {% if page.tags %}
-        {% for target_tag in page.tags %}
-          {% if post.tags contains target_tag %}
-            {% assign display_post = true %}
+      {%- if page.tags -%}
+        {%- for target_tag in page.tags -%}
+          {%- if post.tags contains target_tag -%}
+            {%- assign display_post = true -%}
             {%- comment -%} 1つでもマッチしたらループを抜ける（重複防止） {%- endcomment -%}
-            {% break %} 
-          {% endif %}
-        {% endfor %}
-      {% else %}
+            {%- break -%} 
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
         {%- comment -%} 単数指定（page.tag）の場合の互換性ケア {%- endcomment -%}
-        {% if post.tags contains page.tag %}
-          {% assign display_post = true %}
-        {% endif %}
-      {% endif %}
-
+        {%- if post.tags contains page.tag -%}
+          {%- assign display_post = true -%}
+        {%- endif -%}
+      {%- endif -%}
       {%- comment -%} マッチした記事だけを描画 {%- endcomment -%}
-      {% if display_post %}
+      {%- if display_post %}
         <li>
           <span class="post-meta">{{ post.date | date: "%Y年%m月%d日" }}</span>
           <h2>
@@ -47,45 +43,42 @@ layout: default
 
           {%- comment -%} 抜粋・全文の条件分岐 {%- endcomment -%}
           <div class="post-excerpt" style="margin-bottom: 12px;">
-            {% assign content_size = post.content | strip_html | strip_newlines | size %}
-            {% assign excerpt_size = post.excerpt | strip_html | strip_newlines | size %}
-            
-            {% if content_size > excerpt_size %}
+            {%- assign content_size = post.content | strip_html | strip_newlines | size -%}
+            {%- assign excerpt_size = post.excerpt | strip_html | strip_newlines | size -%}
+            {%- if content_size > excerpt_size -%}
               {{ post.excerpt }}
               <div style="margin-top: 8px;">
                 <a href="{{ post.url | relative_url }}" class="read-more-link" style="font-size: 14px; text-decoration: none;">続きを読む</a>
               </div>
-            {% else %}
+            {%- else -%}
               {{ post.content }}
-            {% endif %}
+            {%- endif -%}
           </div>
           
           {%- comment -%} 記事に紐づく他タグ {%- endcomment -%}
-          {% if post.tags %}
+          {%- if post.tags %}
             <div class="tag-cloud-wrapper" style="margin: 12px 0 4px 0;">
-              {% for tag_item in post.tags %}
+              {%- for tag_item in post.tags -%}
                 {%- comment -%} ① 一旦フォールバック用のURLを作る {%- endcomment -%}
-                {% assign sub_target_url = '/tags/' | append: (tag_item | slugify) | append: '/' %}
-                
+                {%- assign sub_target_url = '/tags/' | append: (tag_item | slugify) | append: '/' -%}
                 {%- comment -%} ② _tags フォルダ内の設定ファイルから正しい permalink を探す {%- endcomment -%}
-                {% for page_item in site.tags %}
-                  {% if page_item.tag == tag_item %}
-                    {% assign sub_target_url = page_item.permalink %}
-                    {% break %}
-                  {% endif %}
-                {% endfor %}
-
+                {%- for page_item in site.tags -%}
+                  {%- if page_item.tag == tag_item -%}
+                    {%- assign sub_target_url = page_item.permalink -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
                 {%- comment -%} ③ 安全になったURLでリンクを出力 {%- endcomment -%}
                 <a href="{{ sub_target_url | relative_url }}" class="tag-cloud-badge">
                   <span class="tag-cloud-dot"></span>
                   {{ tag_item }}
                 </a>
-              {% endfor %}
+              {%- endfor -%}
             </div>
-          {% endif %}
+          {%- endif %}
         </li>
-      {% endif %}
-    {% endfor %}
+      {%- endif -%}
+    {%- endfor %}
   </ul>
 
 </div>
