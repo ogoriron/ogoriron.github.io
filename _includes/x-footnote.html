@@ -11,7 +11,9 @@
       {%- for note_content in refs_array -%}
         {%- if note_content != blank -%}
           {%- assign current_note_num = start_index | plus: forloop.index -%}
-          <li id="note{{ current_note_num }}">[<a href="#ref{{ current_note_num }}" class="fn-back">^</a>]: {{ note_content | strip }}</li>
+          <li id="note{{ current_note_num }}">
+            [<a href="#ref{{ current_note_num }}" class="fn-back">^</a>]: {{ note_content | strip }}
+          </li>
         {%- endif -%}
       {%- endfor -%}
     </ol>
