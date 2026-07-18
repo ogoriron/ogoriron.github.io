@@ -1,49 +1,40 @@
-module Jekyll
-  class FootnoteBlock < Liquid::Block
-    def initialize(tag_name, text, tokens)
-      super
-    end
+{% comment %} 変数の初期化（同一ページ内で初回のみ実行） {% endcomment %}
+{% unless page_fn_counter %}
+  {% assign page_fn_counter = 0 %}
+{% endunless %}
 
-    def render(context)
-      # ページごとにカウンタとテキストリストを初期化
-      context.registers[:fn_counter] ||= 0
-      context.registers[:fn_list] ||= []
+{% if include.mode == "render" %}
+  {% comment %} 【2: 脚注位置での一括出力モード】 {% endcomment %}
+  <ul class="custom-footnotes">
+    {% if footnote_contents_string %}
+      {% assign footnotes_array = footnote_contents_string | split: "|||FN_SPLIT|||" %}
+      {% for note_content in footnotes_array %}
+        {% if note_content != blank %}
+          <li>
+            <span id="note{{ forloop.index }}"></span>
+            {{ forloop.index }}. {{ note_content | strip }}
+            <a href="#ref{{ forloop.index }}" class="fn-back">↩</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </ul>
 
-      # カウンタを自動インクリメント
-      context.registers[:fn_counter] += 1
-      current_num = context.registers[:fn_counter]
+{% else %}
+  {% comment %} 【1: 本文での登録モード】 {% endcomment %}
+  {% assign page_fn_counter = page_fn_counter | plus: 1 %}
 
-      # 中身のMarkdown/HTMLを取得して記憶
-      content = super
-      context.registers[:fn_list] << content
+  {% comment %} 本文側には自動連番のリンクのみを出力 {% endcomment %}
+  <a href="#note{{ page_fn_counter }}" id="ref{{ page_fn_counter }}" class="fn-ref">[{{ page_fn_counter }}]</a>
 
-      # 本文側には自動連番のリンクのみを出力
-      "<a href='#note#{current_num}' id='ref#{current_num}' class='fn-ref'>[#{current_num}]</a>"
-    end
-  end
-
-  class FootnoteRenderTag < Liquid::Tag
-    def render(context)
-      fn_list = context.registers[:fn_list] || []
-      return "" if fn_list.empty?
-
-      # 貯まった注釈をループで回して、Wiki風のリストを生成
-      result = "<ul class='custom-footnotes'>"
-      fn_list.each_with_index do |content, index|
-        num = index + 1
-        # Jekyllのコンバーターを通すことで、注釈内のMarkdownを正しくHTMLに変換
-        site = context.registers[:site]
-        markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
-        html_content = markdown_converter.convert(content).strip
-
-        result += "<li><span id='note#{num}'></span>#{num}. #{html_content} <a href='#ref#{num}' class='fn-back'>↩</a></li>"
-      end
-      result += "</ul>"
-      result
-    end
-  end
-end
-
-# 新しいカスタムタグをJekyllに登録
-Liquid::Template.register_tag('footnote', Jekyll::FootnoteBlock)
-Liquid::Template.register_tag('render_footnotes', Jekyll::FootnoteRenderTag)
+  {% comment %} 
+    Jekyllの変数に注釈テキストを後ろへ後ろへと結合して記憶します。
+    （※ここに以前あった無意味な <script> タグは完全に削除しました）
+  {% endcomment %}
+  {% capture current_note %}{{ include.content }}{% endcapture %}
+  {% if footnote_contents_string %}
+    {% assign footnote_contents_string = footnote_contents_string | append: "|||FN_SPLIT|||" | append: current_note %}
+  {% else %}
+    {% assign footnote_contents_string = current_note %}
+  {% endif %}
+{% endif %}
