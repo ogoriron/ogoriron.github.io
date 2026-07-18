@@ -2,7 +2,7 @@
 {% assign ref_counter = ref_counter | default: 0 -%}
 
 {%- if include.mode == "render" -%}
-  {%- comment %} 脚注位置での一括出力 {% endcomment -%}
+  {%- comment %} 脚注位置での一括出力{% endcomment -%}
   {%- if ref_contents_string -%}
     {%- assign refs_array = ref_contents_string | split: "|||REF_SPLIT|||" -%}
     {%- assign start_index = ref_counter | minus: refs_array.size -%}
@@ -16,7 +16,6 @@
       {%- endfor -%}
     </ol>
   {%- endif -%}
-  {%- comment %} 文字列を毎回初期化 {% endcomment -%}
   {%- assign ref_contents_string = nil -%}
 {%- else -%}
   {%- comment %} 登録モード：自動で連番、変数に注釈を後ろへ結合して記憶
@@ -27,5 +26,6 @@
     {%- assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note -%}
   {%- else -%}
     {%- assign ref_contents_string = current_note -%}
-  {%- endif -%}<a href="#note{{ ref_counter }}" id="ref{{ ref_counter }}" class="fn-ref">[{{ ref_counter }}]</a>
+  {%- endif -%}<!--
+--><a href="#note{{ ref_counter }}" id="ref{{ ref_counter }}" class="fn-ref">[{{ ref_counter }}]</a>
 {%- endif %}
