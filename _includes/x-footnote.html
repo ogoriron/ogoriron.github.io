@@ -20,6 +20,10 @@
     {% endif %}
   </ul>
 
+  {% comment %} 出力したらカウンターと蓄積文字列をリセットする {% endcomment %}
+  {% assign page_ref_counter = 0 %}
+  {% assign ref_contents_string = nil %}
+
 {% else %}
   {% comment %} 【1: 本文での登録モード】呼び出されるたびに自動連番 {% endcomment %}
   {% assign page_ref_counter = page_ref_counter | plus: 1 %}
