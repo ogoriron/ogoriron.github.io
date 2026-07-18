@@ -1,17 +1,14 @@
-{% comment %} 変数の初期化（同一ページ内で初回のみ実行） {% endcomment %}
-{% unless page_ref_counter %}
-  {% assign page_ref_counter = 0 %}
-{% endunless %}
+{% comment %} 変数の初期化 {% endcomment %}
+{% assign count = page_ref_counter | default: 0 %}
 
 {% if include.mode == "render" %}
-  {% comment %} 【2: 脚注位置での一括出力モード】 {% endcomment %}
+  {% comment %} 脚注位置での一括出力{% endcomment %}
   <ol class="custom-footnotes">
     {% if ref_contents_string %}
       {% assign refs_array = ref_contents_string | split: "|||REF_SPLIT|||" %}
       {% for note_content in refs_array %}
         {% if note_content != blank %}
-          <li>
-            <span id="note{{ forloop.index }}"></span>
+          <li id="note{{ forloop.index }}">
             [<a href="#ref{{ forloop.index }}" class="fn-back">^</a>]: {{ note_content | strip }}
           </li>
         {% endif %}
@@ -20,11 +17,12 @@
   </ol>
 
   {% comment %} 出力したらカウンターと蓄積文字列をリセットする {% endcomment %}
-  {% assign page_ref_counter = 0 %}
+  {% assign page_ref_counter = nil %}
   {% assign ref_contents_string = nil %}
 
 {% else -%}
-  {%- comment %} 【1: 本文での登録モード】改行・空白を徹底除去し、Pタグの発生を完全防衛 {% endcomment -%}
+  {%- comment %} 登録モード：自動で連番、変数に注釈を後ろへ結合して記憶
+    改行・空白を徹底除去し、Pタグの発生を完全防衛 {% endcomment -%}
   {%- assign page_ref_counter = page_ref_counter | plus: 1 -%}
   {%- capture current_note -%}{{ include.content }}{%- endcapture -%}
   {%- if ref_contents_string -%}
