@@ -21,7 +21,7 @@
   {%- comment %} 登録モード：自動で連番、変数に注釈を後ろへ結合して記憶
     改行・空白を徹底除去し、Pタグの発生を完全防衛 {% endcomment -%}
   {%- assign ref_counter = ref_counter | plus: 1 -%}
-  {%- capture current_note -%}{{ include.content | markdownify | strip }}{%- endcapture -%}
+  {%- assign current_note = include.content | markdownify | replace_first: '<p>', '' | replace: '</p>', '' | strip -%}
   {%- if ref_contents_string -%}
     {%- assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note -%}
   {%- else -%}
