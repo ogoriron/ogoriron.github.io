@@ -12,5 +12,5 @@ description: "奢り奢られ、割り勘のデータ記事の一覧ページで
   <li>
     <a href="../baby/">出産費用</a>
   </li>
-{%- include x-list-post.html %}
+{%- include x-list-post.html -%}
 </ul>
