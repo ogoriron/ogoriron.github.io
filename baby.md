@@ -148,11 +148,14 @@ chartjs: true
 
 扶養している子供が3人なら。2025年より。この時点で98%の大学が対応。公立なら無償、私立なら年70万円の支援額を超えることも多々。<br>欧州に大学無償があるので、将来は支援が進むだろう。
 
-
+ {% comment %}
 {{ site.p.side }}
-少子化というけれど。
+少子化というけれど。主要7か国で、10代の死因の1位が自殺なのは日本だけといわれており。
 
-主要7か国で、10代の死因の1位が自殺なのは日本だけ。{% capture ref %}コメントテスト{% endcapture %}{% include x-footnote.html content=ref %}
+重複回答ありで、うつ病が4000件超、その他精神疾患が1800件、（統合失調や酒や薬物依存、摂食障害を除く）、金銭問題が5000件超などは、まだまだ防げるのではとは思うが。
+
+{% capture ref %}{{site.p.cite}}「[令和7年中における自殺の状況](https://www.npa.go.jp/safetylife/seianki/jisatsu/R08/R7jisatsunojoukyou.pdf){{cite.p.endcite}}」（警視庁）{% endcapture %}{% include x-footnote.html content=ref %}
 
 {% include x-footnote.html mode="render" %}
 {{ site.p.endside }}
+ {% endcomment %}
