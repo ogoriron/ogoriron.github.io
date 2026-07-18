@@ -1,14 +1,14 @@
 {% comment %} 変数の初期化（同一ページ内で初回のみ実行） {% endcomment %}
-{% unless page_fn_counter %}
-  {% assign page_fn_counter = 0 %}
+{% unless page_ref_counter %}
+  {% assign page_ref_counter = 0 %}
 {% endunless %}
 
 {% if include.mode == "render" %}
   {% comment %} 【2: 脚注位置での一括出力モード】 {% endcomment %}
   <ul class="custom-footnotes">
-    {% if footnote_contents_string %}
-      {% assign footnotes_array = footnote_contents_string | split: "|||FN_SPLIT|||" %}
-      {% for note_content in footnotes_array %}
+    {% if ref_contents_string %}
+      {% assign refs_array = ref_contents_string | split: "|||REF_SPLIT|||" %}
+      {% for note_content in refs_array %}
         {% if note_content != blank %}
           <li>
             <span id="note{{ forloop.index }}"></span>
@@ -21,20 +21,17 @@
   </ul>
 
 {% else %}
-  {% comment %} 【1: 本文での登録モード】 {% endcomment %}
-  {% assign page_fn_counter = page_fn_counter | plus: 1 %}
+  {% comment %} 【1: 本文での登録モード】呼び出されるたびに自動連番 {% endcomment %}
+  {% assign page_ref_counter = page_ref_counter | plus: 1 %}
 
   {% comment %} 本文側には自動連番のリンクのみを出力 {% endcomment %}
-  <a href="#note{{ page_fn_counter }}" id="ref{{ page_fn_counter }}" class="fn-ref">[{{ page_fn_counter }}]</a>
+  <a href="#note{{ page_ref_counter }}" id="ref{{ page_ref_counter }}" class="fn-ref">[{{ page_ref_counter }}]</a>
 
-  {% comment %} 
-    Jekyllの変数に注釈テキストを後ろへ後ろへと結合して記憶します。
-    （※ここに以前あった無意味な <script> タグは完全に削除しました）
-  {% endcomment %}
+  {% comment %} Jekyllの変数に注釈テキストを後ろへ結合して記憶 {% endcomment %}
   {% capture current_note %}{{ include.content }}{% endcapture %}
-  {% if footnote_contents_string %}
-    {% assign footnote_contents_string = footnote_contents_string | append: "|||FN_SPLIT|||" | append: current_note %}
+  {% if ref_contents_string %}
+    {% assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note %}
   {% else %}
-    {% assign footnote_contents_string = current_note %}
+    {% assign ref_contents_string = current_note %}
   {% endif %}
 {% endif %}
