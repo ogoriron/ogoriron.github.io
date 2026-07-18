@@ -31,6 +31,5 @@
     {%- assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note -%}
   {%- else -%}
     {%- assign ref_contents_string = current_note -%}
-  {%- endif -%}
-  <a href="#note{{ page_ref_counter }}" id="ref{{ page_ref_counter }}" class="fn-ref">[{{ page_ref_counter }}]</a>
+  {%- endif -%}<a href="#note{{ page_ref_counter }}" id="ref{{ page_ref_counter }}" class="fn-ref">[{{ page_ref_counter }}]</a>
 {%- endif %}
