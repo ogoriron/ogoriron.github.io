@@ -276,6 +276,9 @@ aside {
     padding: 4px 2px;
   }
 }
+aside > *:last-child {
+  margin-bottom: 0;
+}
 aside::before {
   content: "コラム";
   position: absolute;
