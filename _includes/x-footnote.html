@@ -24,18 +24,17 @@
   {% assign ref_contents_string = nil %}
 
 {% else %}
+  {% comment %} 【1: 本文での登録モード】呼び出されるたびに自動連番 {% endcomment %}
+  {% comment %} 本文側には自動連番のリンクのみを出力 {% endcomment %}
+  {% comment %} Jekyllの変数に注釈テキストを後ろへ結合して記憶 {% endcomment %}
   {% comment %} 
     💡【改行・空白の完全ディフェンス】
-    else以降の出力から、Jekyllの誤認の原因になる改行とインデントの余白をすべて強制除去します。
+    Kramdownのバグを防ぐため、コメントタグはすべてcaptureの「外側」にまとめました。
+    これでcaptureの中身は純粋なプログラムとaタグだけになり、不要な空行や<p>タグが絶対に発生しません。
   {% endcomment %}
   {% capture inline_output %}
-    {% comment %} 【1: 本文での登録モード】呼び出されるたびに自動連番 {% endcomment %}
     {% assign page_ref_counter = page_ref_counter | plus: 1 %}
-
-    {% comment %} 本文側には自動連番のリンクのみを出力 {% endcomment %}
     <a href="#note{{ page_ref_counter }}" id="ref{{ page_ref_counter }}" class="fn-ref">[{{ page_ref_counter }}]</a>
-
-    {% comment %} Jekyllの変数に注釈テキストを後ろへ結合して記憶 {% endcomment %}
     {% capture current_note %}{{ include.content }}{% endcapture %}
     {% if ref_contents_string %}
       {% assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note %}
