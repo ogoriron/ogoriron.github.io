@@ -1,4 +1,5 @@
-<div class="tag-cloud-wrapper">{% comment %}
+<div class="tag-cloud-wrapper">
+{%- comment %}
   以降コメント消さない: カスタムコレクション tags からタグページの一覧をループ{% endcomment %}
 {%- assign tag_collection = site.collections | where: "label", "tags" | first -%}
 {%- for tag_page in tag_collection.docs -%}
@@ -16,5 +17,5 @@
     <span class="tag-cloud-name">{{ current_tag_name }}</span>
     <span class="tag-cloud-count">{{ tag_posts_count }}</span>
   </a>
-{%- endfor -%}
+{% endfor %}
 </div>
