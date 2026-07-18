@@ -98,19 +98,18 @@ chartjs: true
 
 {{ site.p.side }}
 
-**日本の無痛分娩**の利用率は、2024年に**16.2%**で、2018年の5%から増えた。東京での利用率が最も多く、対応できない施設も多い（東京では2025年以降は補助金もあり。日本で無痛分娩がしにくいのは、医療体制や補助金の不足ですね）。
- {{ site.p.cite }}「[無痛分娩普及率、24年は16.2%　6年連続上昇、地域には偏り](https://www.asahi.com/articles/ASTCW108KTCWOXIE03GM.html)」『朝日新聞』2025年12月25日。{{ site.p.endcite }}
+**日本の無痛分娩**の利用率は、2024年に**16.2%**で、2018年の5%から増えた。東京での利用率が最も多く、対応できない施設も多い（東京では2025年以降は補助金もあり。日本で無痛分娩がしにくいのは、医療体制や補助金の不足ですね）。{% capture ref %}{{ site.p.cite }}「[無痛分娩普及率、24年は16.2%　6年連続上昇、地域には偏り](https://www.asahi.com/articles/ASTCW108KTCWOXIE03GM.html)」『朝日新聞』2025年12月25日。{{ site.p.endcite }}{% endcapture %}
+{% include footnote.html content=ref %}
 
-諸外国は、無痛分娩で体力消費を抑え、早く退院し、助産師が訪問することで費用を抑えている。入院日数は、日本が5.3日で最長で、ほかの国、欧米韓国の平均2.5日の2倍もある。最短のイギリスでは1.6日。（イギリスは、無痛分娩を希望しても足りておらず、早く帰されるのに助産師が来ないなど、少し医療崩壊している）
-{{ site.p.cite }} 羽藤倫子 「[諸外国における妊娠出産に関する公的医療保障制度の適用について](https://www.jmari.med.or.jp/wp-content/uploads/2024/07/RR138.pdf)」 5ページに日数。{{ site.p.endcite }}
+諸外国は、無痛分娩で体力消費を抑え、早く退院し、助産師が訪問することで費用を抑えている。入院日数は、日本が5.3日で最長で、ほかの国、欧米韓国の平均2.5日の2倍もある。最短のイギリスでは1.6日。{% capture ref %}{{ site.p.cite }} 羽藤倫子 「[諸外国における妊娠出産に関する公的医療保障制度の適用について](https://www.jmari.med.or.jp/wp-content/uploads/2024/07/RR138.pdf)」 5ページに日数。{{ site.p.endcite }}{% endcapture %}
+{% include footnote.html content=ref %}（イギリスは、無痛分娩を希望しても足りておらず、早く帰されるのに助産師が来ないなど、少し医療崩壊している）
 
-韓国では2004年に無痛分娩が保険適応となった。韓国ソウルの関東医大第一病院での、無痛分娩の利用率は、2003年に3.8%、2008年には54.2%まで増加した。ここはマンモス病院で、すべての自然分娩の人数が2003年計4079人、2008年2478人。（韓国初の婦人科だったが出産だけに頼り続け2018年には少子化により経営難に: 出典: [국내 1호 여성병원 제일병원 결국 폐업 위기, 왜?](https://www.hankookilbo.com/news/article/201810161034067196)）
+韓国では2004年に無痛分娩が保険適応となった。韓国ソウルの関東医大第一病院での、無痛分娩の利用率は、2003年に3.8%、2008年には54.2%まで増加した。ここはマンモス病院で、すべての自然分娩の人数が2003年計4079人、2008年2478人。{% capture ref %}{{ site.p.cite }}김원학 기자 (キム・ウォンハク) [무통 자연분만율 5년새 14배 '껑충' (痛みのない自然分娩率5年で14倍) ](https://www.bosa.co.kr/news/articleView.html?idxno=144584)（의학신문: 医学新聞、2009年11月9日） {{ site.p.endcite }}{% endcapture %}
+{% include footnote.html content=ref %}（韓国初の婦人科だったが出産だけに頼り続け2018年には少子化により経営難に{% capture ref %}{{ site.p.cite }}김치중. [국내 1호 여성병원 제일병원 결국 폐업 위기, 왜?](https://www.hankookilbo.com/news/article/201810161034067196), 2018年{{ site.p.endcite }}{% endcapture %}
+{% include footnote.html content=ref %}）
 
-{{ site.p.cite }} 김원학 기자 (キム・ウォンハク) [무통 자연분만율 5년새 14배 '껑충' (痛みのない自然分娩率5年で14倍) ](https://www.bosa.co.kr/news/articleView.html?idxno=144584)（의학신문: 医学新聞、2009年11月9日） {{ site.p.endcite }}
-
-その後、帝王切開まで低価格に（2016年の5%負担から、2025年に完全無償）。爆増し始め、2024年には出産の66.9%が帝王切開になってしまい、手術の種類として韓国3位となるし、母親の回復も遅い、また母親の死亡率も11倍になる。無痛分娩を含む自然分娩は残りの33.1%となり、増えなくなったね笑 逆に母親の命も危険だし、適切な帝王のための規制をかける水準では。
-
-{{ site.p.cite }} Oh Kyung-muk [South Korea's Cesarean Rate Surges to Record High (韓国の帝王切開が過去最高)](https://www.chosun.com/english/national-en/2025/12/08/NPB3ZL6VGFEWDLGOBTMXRTFDUQ/), *CHOSUN*、2025年12月08日。{{ site.p.endcite }}
+その後、帝王切開まで低価格に（2016年の5%負担から、2025年に完全無償）。爆増し始め、2024年には出産の66.9%が帝王切開になってしまい、手術の種類として韓国3位となるし、母親の回復も遅い、また母親の死亡率も11倍になる。{% capture ref %}{{ site.p.cite }} Oh Kyung-muk. [South Korea's Cesarean Rate Surges to Record High (韓国の帝王切開が過去最高)](https://www.chosun.com/english/national-en/2025/12/08/NPB3ZL6VGFEWDLGOBTMXRTFDUQ/), *CHOSUN*, 2025年12月08日。{{ site.p.endcite }}{% endcapture %}
+{% include footnote.html content=ref %}無痛分娩を含む自然分娩は残りの33.1%となり、増えなくなったね笑 逆に母親の命も危険だし、適切な帝王のための規制をかける水準では。
 
 {{ site.p.endside }}
 
@@ -153,6 +152,8 @@ chartjs: true
 扶養している子供が3人なら。2025年より。この時点で98%の大学が対応。公立なら無償、私立なら年70万円の支援額を超えることも多々。<br>欧州に大学無償があるので、将来は支援が進むだろう。
 
 
-> [!NOTE]
->
-> 少子化というけれど。主要7か国で、10代の死因の1位が自殺なのは日本だけ。
+{{ site.p.side }}
+少子化というけれど。
+
+主要7か国で、10代の死因の1位が自殺なのは日本だけ。
+{{ site.p.endside }}
