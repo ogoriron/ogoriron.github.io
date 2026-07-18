@@ -12,8 +12,7 @@
         {% if note_content != blank %}
           <li>
             <span id="note{{ forloop.index }}"></span>
-            {{ forloop.index }}. {{ note_content | strip }}
-            <a href="#ref{{ forloop.index }}" class="fn-back">↩</a>
+            [<a href="#ref{{ forloop.index }}" class="fn-back">^{{ forloop.index }}</a>]: {{ note_content | strip }}
           </li>
         {% endif %}
       {% endfor %}
@@ -24,18 +23,18 @@
   {% assign page_ref_counter = 0 %}
   {% assign ref_contents_string = nil %}
 
-{% else %}
-  {% comment %} 【1: 本文での登録モード】呼び出されるたびに自動連番 {% endcomment %}
-  {% assign page_ref_counter = page_ref_counter | plus: 1 %}
+{% else -%}
+  {% comment %} 【1: 本文での登録モード】呼び出されるたびに自動連番 {% endcomment -%}
+  {% assign page_ref_counter = page_ref_counter | plus: 1 -%}
 
-  {% comment %} 本文側には自動連番のリンクのみを出力 {% endcomment %}
+  {% comment %} 本文側には自動連番のリンクのみを出力 {% endcomment -%}
   <a href="#note{{ page_ref_counter }}" id="ref{{ page_ref_counter }}" class="fn-ref">[{{ page_ref_counter }}]</a>
-
-  {% comment %} Jekyllの変数に注釈テキストを後ろへ結合して記憶 {% endcomment %}
-  {% capture current_note %}{{ include.content }}{% endcapture %}
-  {% if ref_contents_string %}
-    {% assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note %}
-  {% else %}
-    {% assign ref_contents_string = current_note %}
-  {% endif %}
+  
+  {%- comment %} Jekyllの変数に注釈テキストを後ろへ結合して記憶 {% endcomment -%}
+  {%- capture current_note %}{{ include.content }}{% endcapture -%}
+  {%- if ref_contents_string -%}
+    {%- assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note -%}
+  {%- else -%}
+    {%- assign ref_contents_string = current_note -%}
+  {%- endif -%}
 {% endif %}
