@@ -1,5 +1,6 @@
 {% comment %} 変数の初期化 {% endcomment %}
-{% assign count = page_ref_counter | default: 0 %}
+{% assign ref_counter = ref_counter | default: 0 %}
+{% assign last_index = last_index | default: 0 %}
 
 {% if include.mode == "render" %}
   {% comment %} 脚注位置での一括出力{% endcomment %}
@@ -7,29 +8,28 @@
     {% if ref_contents_string %}
       {% assign refs_array = ref_contents_string | split: "|||REF_SPLIT|||" %}
       {% for note_content in refs_array %}
-        {% if note_content != blank %}
-          {% comment %} 配列数から逆算し通し番号を算出 {% endcomment %}
-          {% assign start_index = page_ref_counter | minus: refs_array.size %}
-          {% assign current_note_num = start_index | plus: forloop.index %}
-          <li id="note{{ current_note_num }}">
-            [<a href="#ref{{ current_note_num }}" class="fn-back">^</a>]: {{ note_content | strip }}
-          </li>
+        {% if forloop.index > last_index %}
+          {% if note_content != blank %}
+            <li id="note{{ forloop.index }}">
+              [<a href="#ref{{ forloop.index }}" class="fn-back">^</a>]: {{ note_content | strip }}
+            </li>
+          {% endif %}
         {% endif %}
       {% endfor %}
     {% endif %}
   </ol>
 
-  {% comment %} 出力後、蓄積文字列のみ初期化 {% endcomment %}
-  {% assign ref_contents_string = nil %}
+  {% comment %} 次回の開始位置 {% endcomment %}
+  {% assign last_index = refs_array.size %}
 
 {% else -%}
   {%- comment %} 登録モード：自動で連番、変数に注釈を後ろへ結合して記憶
     改行・空白を徹底除去し、Pタグの発生を完全防衛 {% endcomment -%}
-  {%- assign page_ref_counter = page_ref_counter | plus: 1 -%}
+  {%- assign ref_counter = ref_counter | plus: 1 -%}
   {%- capture current_note -%}{{ include.content }}{%- endcapture -%}
   {%- if ref_contents_string -%}
     {%- assign ref_contents_string = ref_contents_string | append: "|||REF_SPLIT|||" | append: current_note -%}
   {%- else -%}
     {%- assign ref_contents_string = current_note -%}
-  {%- endif -%}<a href="#note{{ page_ref_counter }}" id="ref{{ page_ref_counter }}" class="fn-ref">[{{ page_ref_counter }}]</a>
+  {%- endif -%}<a href="#note{{ ref_counter }}" id="ref{{ ref_counter }}" class="fn-ref">[{{ ref_counter }}]</a>
 {%- endif %}
