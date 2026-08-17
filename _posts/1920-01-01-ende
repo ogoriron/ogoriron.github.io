@@ -4,5 +4,14 @@ tags: 円でいいよ
 chartjs: true
 ---
 
+国会図書館の資料検索で見ると、1920年代（大正10年代）から「円でいいよ」という表現があります。明治時代後半くらいから、データベースにあると思うので、「銭でいいよ」で検索しても明治までは遡らないね。100年近い
+
+最古の文献
+<ul>
+<li>円でいいよ: 『嗚呼朝日平吾』1922年、大正11年</li>
+<li>円でいいよ: 『[診療簿余白](https://dl.ndl.go.jp/pid/977954/1/46?keyword=%22%E5%86%86%E3%81%A7%E3%81%84%E3%81%84%E3%82%88%22)』1923年、大正12年</li>
+
+</ul>
 
 {{ site.p.cite }} [検索: 円でいいよ](https://dl.ndl.go.jp/search/searchResult?accessRestrictions=internet&accessRestrictions=ooc&accessRestrictions=inlibrary&collection=A00001&collection=A00002&collection=A00022&collection=A00003&collection=A00014&collection=A00015&collection=A00188&collection=A00017&collection=A00016&collection=A00019&collection=A00121&collection=A00024&collection=A00152&collection=A00150&collection=A00173&collection=A00122&collection=A00162&collection=B00000&keyword=%22%E5%86%86%E3%81%A7%E3%81%84%E3%81%84%E3%82%88%22&fullText=true&eraType=AD&availableType=Persend&publicationTo=2026-00-00&identifierItem=ISBN&includeVolumeNum=true&pageNum=0&pageSize=100&sortKey=ISSUED_ASC&displayMode=list) {{ site.p.gentei }}（国会図書館デジタルコレクション）{{ site.p.endcite }}
+{{ site.p.cite }} [検索: 銭でいいよ](https://dl.ndl.go.jp/search/searchResult?accessRestrictions=internet&accessRestrictions=ooc&accessRestrictions=inlibrary&collection=A00001&collection=A00002&collection=A00022&collection=A00003&collection=A00014&collection=A00015&collection=A00188&collection=A00017&collection=A00016&collection=A00019&collection=A00121&collection=A00024&collection=A00152&collection=A00150&collection=A00173&collection=A00122&collection=A00162&collection=B00000&keyword=%22%E9%8A%AD%E3%81%A7%E3%81%84%E3%81%84%E3%82%88%22&fullText=true&eraType=AD&availableType=Persend&publicationTo=2026-00-00&identifierItem=ISBN&includeVolumeNum=true&pageNum=0&pageSize=100&sortKey=ISSUED_ASC&displayMode=list) {{ site.p.gentei }}（国会図書館デジタルコレクション）{{ site.p.endcite }}
