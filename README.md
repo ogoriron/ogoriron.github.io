@@ -32,6 +32,11 @@ description: "日本における割り勘、奢り奢られ論に関するデー
 <div>{{ p.excerpt }}</div>
         </li>
 
+        <li>
+{% assign p = site.posts | where_exp: "item", "item.path contains '2023-07-21'" | first %}
+<div>{{ p.excerpt }}</div>
+        </li>
+
   </ul>
 </div>
 
