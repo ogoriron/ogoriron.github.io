@@ -45,7 +45,6 @@ description: "日本における割り勘、奢り奢られ論に関するデー
 ### 関連項目
 
 - 就業率
-  - 給与
 - [出産費用](baby/)
 
 {% include x-tag-cloud.html %}
