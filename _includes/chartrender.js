@@ -27,7 +27,7 @@
 
     const isMobile = window.innerWidth < 720;
     const isMiniMobile = window.innerWidth < 400;
-    const fontSize = isMiniMobile ? 11 : undefined; // 規定12
+    let fontSize = isMiniMobile ? 11 : undefined; // 規定12
     const boxWidth = isMiniMobile ? 8 : (isMobile ? 15 : undefined);
     const padding = isMiniMobile ? 4 : undefined;
     // const isDark = /^rgb\(\s*[0-3]/i.test(borderColor);
@@ -85,7 +85,9 @@
 
       const N = rows.length;
       if (N === 0) return;
-
+      if (10 < N) {
+        fontSize = 10;
+      }
       const aspectRatio = isMobile ? undefined : (N <= 8 ? 4 : 3);
 
       // データセットの構築
