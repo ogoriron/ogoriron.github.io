@@ -22,35 +22,56 @@ description: "日本における割り勘、奢り奢られ論に関するデー
 <div class="tag-page-wrapper">
   <ul class="post-list">
 
-        <li>
-{% assign p = site.posts | where_exp: "item", "item.path contains '1959-01-01'" | first %}
-<div>{{ p.content }}</div>
-        </li>
+{% comment %} 1. 検索したい日付の配列を定義します {% endcomment %}
+{% assign target_dates = "1959-01-01,2021-01-01,2023-07-21" | split: "," %}
 
-        <li>
-{% assign p = site.posts | where_exp: "item", "item.path contains '2021-01-01'" | first %}
-<div>{{ p.excerpt }}</div>
-        </li>
+{% comment %} 2. ループで回して出力します {% endcomment %}
+{% for date in target_dates %}
+  <li>
+    {% assign p = site.posts | where_exp: "item", "item.path contains date" | first %}
+    {% if p %}
+      <div>
+        {%- comment -%} 記事の抜粋を表示 {%- endcomment -%}
+        {{ p.excerpt }}
 
-        <li>
-{% assign p = site.posts | where_exp: "item", "item.path contains '2023-07-21'" | first %}
-<div>{{ p.excerpt }}</div>
-        </li>
+        {% comment %} 記事に紐づく他タグを表示 {% endcomment %}
+        {% if p.tags %}
+          <div class="tag-cloud-wrapper" style="margin: 12px 0 4px 0;">
+            {% for tag_item in p.tags %}
+              {% comment %} ① 一旦フォールバック用のURLを作る {% endcomment %}
+              {% assign sub_target_url = '/tags/' | append: (tag_item | slugify) | append: '/' %}
+              
+              {% comment %} ② _tags フォルダ内の設定ファイルから正しい permalink を探す {% endcomment %}
+              {% for page_item in site.tags %}
+                {% if page_item.tag == tag_item %}
+                  {% assign sub_target_url = page_item.permalink %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+              
+              {% comment %} ③ 安全になったURLでリンクを出力 {% endcomment %}
+              <a href="{{ sub_target_url | relative_url }}" class="tag-cloud-badge">
+                <span class="tag-cloud-dot"></span>
+                {{ tag_item }}
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </li>
+{% endfor %}
+
 
   </ul>
 </div>
 
 <!--誘った方-->
 
-### 関連項目
-
-- 就業率
-- [出産費用](baby/)
-
 {% include x-tag-cloud.html %}
 
 [記事一覧](list)
-
+- [出産費用](baby/)
 
 {% comment %}<br>
 ## ライセンス
