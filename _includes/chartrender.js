@@ -208,6 +208,7 @@
           maxPercent = Math.ceil((maxRowSum + 20) / 10) * 10;
         }
       }
+      if (maxPercent > 100) maxPercent = 100;
 
       // テーマ対応用のグリッド線・境界線の色定義
       const gridColor = textColor + '22';
