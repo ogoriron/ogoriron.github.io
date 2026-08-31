@@ -238,6 +238,56 @@ table tbody tr:nth-child(even) {
   }
 }
 
+/* ==========================================================================
+   Ultra-Compact & High-Contrast Table
+   ========================================================================== */
+
+/* 1. テーブル全体：外枠との隙間（マージン）もさらに削減 */
+table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  border-collapse: separate;
+  border-spacing: 0;
+  border-style: solid;
+  border-width: 1px !important;
+  border-radius: 4px;
+  margin: 0.75rem 0 !important; 
+}
+
+table table {
+  display: table;
+}
+
+th, td {
+  font-size: 0.9rem;
+}
+th {
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  padding: 2px 8px !important;
+  text-align: left;
+  border-bottom-style: solid;
+  border-bottom-width: 1px !important;
+}
+
+td {
+  font-weight: 550; 
+  line-height: 1.1;
+  padding: 4px 10px !important;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+/* 4. 外枠の角丸（border-radius）を綺麗に保つためのトリミング処理 */
+tr:first-child th:first-child { border-top-left-radius: 3px; }
+tr:first-child th:last-child { border-top-right-radius: 3px; }
+tr:last-child td:first-child { border-bottom-left-radius: 3px; border-bottom: none; }
+tr:last-child td:last-child { border-bottom-right-radius: 3px; border-bottom: none; }
+
 /* Wikipedia風外部リンク */
 a[href^="https://"]:not([href*="ogoriron.github.io"])::after {
   content: "";
