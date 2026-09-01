@@ -48,7 +48,7 @@ layout: default
             {%- if content_size > excerpt_size -%}
               {{ post.excerpt }}
               <div style="margin-top: 8px;">
-                <a href="{{ post.url | relative_url }}" class="read-more-link" style="font-size: 14px; text-decoration: none;">続きを読む</a>
+                <a href="{{ post.url | relative_url }}" class="read-more-link">続きを読む</a>
               </div>
             {%- else -%}
               {{ post.content }}
