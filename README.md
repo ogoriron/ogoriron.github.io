@@ -44,10 +44,10 @@ description: "日本における割り勘、奢り奢られ論に関するデー
         {% if p.tags %}
           <div class="tag-cloud-wrapper" style="margin: 12px 0 4px 0;">
             {% for tag_item in p.tags %}
-              {% comment %} ① 一旦フォールバック用のURLを作る {% endcomment %}
+              {% comment %} 1. 一旦フォールバック用のURLを作る {% endcomment %}
               {% assign sub_target_url = '/tags/' | append: (tag_item | slugify) | append: '/' %}
               
-              {% comment %} ② _tags フォルダ内の設定ファイルから正しい permalink を探す {% endcomment %}
+              {% comment %} 2. _tags フォルダ内の設定ファイルから正しい permalink を探す {% endcomment %}
               {% for page_item in site.tags %}
                 {% if page_item.tag == tag_item %}
                   {% assign sub_target_url = page_item.permalink %}
@@ -55,7 +55,7 @@ description: "日本における割り勘、奢り奢られ論に関するデー
                 {% endif %}
               {% endfor %}
               
-              {% comment %} ③ 安全になったURLでリンクを出力 {% endcomment %}
+              {% comment %} 3. 安全になったURLでリンクを出力 {% endcomment %}
               <a href="{{ sub_target_url | relative_url }}" class="tag-cloud-badge">
                 <span class="tag-cloud-dot"></span>
                 {{ tag_item }}
