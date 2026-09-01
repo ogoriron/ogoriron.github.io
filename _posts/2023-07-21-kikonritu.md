@@ -163,7 +163,7 @@ chartjs: true
 {{ site.p.cite }}
 「[就業構造基本調査 / 令和4年就業構造基本調査 / 全国編 人口・就業に関する統計表](https://www.e-stat.go.jp/stat-search/files?stat_infid=000040077301)」（e-Stat、2023年7月21日 ）{{ site.p.endcite }}
 
-以降、もっと表を詳細に
+もっと細かな表データは以下。
 <!-- more -->
 
 ### 25～29歳 男性の収入分布（詳細）
