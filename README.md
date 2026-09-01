@@ -33,8 +33,14 @@ description: "日本における割り勘、奢り奢られ論に関するデー
       <div>
         {%- comment -%} 記事の抜粋を表示 {%- endcomment -%}
         {{ p.excerpt }}
+        {% assign p = site.posts | where_exp: "item", "item.path contains date" | first %}
+        {% if date == "2023-07-21" and p %}
+          <div style="margin-top: 8px;">
+          <a href="{{ p.url | relative_url }}" class="read-more-link">続きを読む</a>
+          </div>
+        {% endif %}
 
-        {% comment %} 記事に紐づく他タグを表示 {% endcomment %}
+        {% comment %} 記事のタグを表示 {% endcomment %}
         {% if p.tags %}
           <div class="tag-cloud-wrapper" style="margin: 12px 0 4px 0;">
             {% for tag_item in p.tags %}
