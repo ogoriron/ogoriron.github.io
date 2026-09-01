@@ -2,6 +2,7 @@
 title: 出産費用
 description: "出産費用は、1991年から国からかなり補助されてます。"
 permalink: /baby/
+tags: 統計出産男女 統計出産費用
 chartjs: true
 ---
 {% comment %}[表示](https://ogoriron.github.io/baby/) {% endcomment %}
