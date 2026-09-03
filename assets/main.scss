@@ -161,9 +161,12 @@ cite a {
     }
   }  
 }
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2x) { /* webkit: iOS15対応 */
+  .social-media-list { margin-bottom: 10px; }
+  .footer-col { margin-bottom: 4px; }
+}
 
 /* 独自タグ 長いから視認性のためにここ */
-.nomobile { display: none; }
 .post-list { list-style: none; padding: 0; margin: 0; }
 .post-list > li{
   background: #fff;
@@ -219,6 +222,9 @@ cite a {
   }
 }
 
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2x) { /* webkit: iOS15対応 */
+  .nomobile { display: none !important; }
+}
 /* ダークモード汎用 */
 @media (prefers-color-scheme: dark) {
   body { background-color: var(--dark-bg-color); color: var(--dark-txt-color); }
