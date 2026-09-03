@@ -2,7 +2,7 @@ lang: "ja"
 title: オゴリロン - データに基づく割り勘・奢り論
 #description: オゴリロン：割り勘・奢り論のデータを深掘り。昔は・・そんな都市伝説を解体！
 author: ogoriron
-#minima 3.0 では下記に変更
+#minima 3.0 では下記に変更された
 author:
   name: ogoriron
 theme: minima
@@ -34,7 +34,7 @@ p:
   auth: "（要ログイン）"
   gentei: "（限定アクセス）"
 
-youtube_username: @ogoriron
+youtube_username: "@ogoriron"
 
 # 以下は3.0用だがコメントアウトして使っていない
 minima:
