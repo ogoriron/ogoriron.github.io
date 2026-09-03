@@ -34,7 +34,7 @@ p:
   auth: "（要ログイン）"
   gentei: "（限定アクセス）"
 
-youtube_username: "@ogoriron"
+youtube_username: "ogoriron"
 
 # 以下は3.0用だがコメントアウトして使っていない
 minima:
