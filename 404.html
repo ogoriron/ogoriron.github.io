@@ -31,7 +31,7 @@ hide_in_nav: true
   </div>
 </div>
 
-<script>window.addEventListener('DOMContentLoaded', function() {
+<script>
   const canvas = document.getElementById('errorCanvas');
   const ctx = canvas.getContext('2d');
   
@@ -43,12 +43,19 @@ hide_in_nav: true
   const bodyStyle = window.getComputedStyle(document.body);
   let bgColor = bodyStyle.backgroundColor || '#eaeaea';
   
+  // 背景色自体に透明度(rgba)が含まれている場合、重ね塗りで色が変わるのを防ぐためrgbに強制変換
+  if (bgColor.includes('rgba')) {
+    bgColor = bgColor.replace('rgba', 'rgb').replace(/,[^,]*\)$/, ')');
+  } else if (bgColor === 'transparent' || bgColor === 'rgba(0, 0, 0, 0)') {
+    bgColor = '#ffffff';
+  }
+  
   // 波と粒子の色はMinimaのブランドカラーで固定
   const brandColor = '#2a7ae2'; 
   
   // --- 粒子アニメーション用の設定 ---
   const particleCount = 40; 
-  const startX = width * 0.65; // 画面中央付近から粒子を飛ばす
+  const startX = width * 0.65; // 画面の65%付近から粒子を飛ばす
   const particles = [];
   
   // 簡易的な擬似乱数で初期配置を作成
@@ -60,8 +67,11 @@ hide_in_nav: true
   
   // 粒子の初期データを配列に格納
   for (let i = 0; i < particleCount; i++) {
-    const initialX = startX + random() * (width - startX + 100);
-    const progress = (initialX - startX) / (width - startX);
+    const maxSpawnWidth = (width + 40) - startX;
+    const initialX = startX + random() * maxSpawnWidth;
+    
+    // progressがマイナスや1以上にならないよう 0.0〜1.0 の間に安全に収める
+    const progress = Math.max(0, Math.min(1, (initialX - startX) / (width - startX)));
     const spread = height * 0.25 * (progress + 0.2);
     const initialY = centerY + (random() + random() - 1) * spread;
     
@@ -69,9 +79,9 @@ hide_in_nav: true
       x: initialX,
       baseY: initialY, // サイン波の基準となる中心Y座標
       size: 5 + random() * 4,
-      speed: 0.24 + random() * 0.76, // 横への移動速度（2倍設定維持）
+      speed: 0.24 + random() * 0.76, // 横への移動速度
       angle: random() * Math.PI * 2,
-      waveSpeed: 0.01 + random() * 0.02, // 上下の波（うねり）のスピード（2倍設定維持）
+      waveSpeed: 0.01 + random() * 0.02, // 上下の波（うねり）のスピード
       waveAmp: 10 + random() * 20        // 上下に揺れる幅
     });
   }
@@ -113,16 +123,18 @@ hide_in_nav: true
       p.x += p.speed;
       p.angle += p.waveSpeed;
       
+      // 画面の右端(width + 50)を超えたら左側(startX)に戻す
       if (p.x > width + 50) {
-        p.x = startX - (random() * 20);
+        // 戻す位置を確実に startX 以降にし、progressのマイナス化を防ぐ
+        p.x = startX + (random() * 10);
         const progress = 0;
         const spread = height * 0.25 * (progress + 0.2);
         p.baseY = centerY + (random() + random() - 1) * spread;
         p.angle = random() * Math.PI * 2;
       }
       
-      // ベースのY座標にサイン波の「うねり」を加える
-      const currentProgress = (p.x - startX) / (width - startX);
+      // currentProgressの値を 0.0 〜 1.0 の間に安全に丸める
+      const currentProgress = Math.max(0, Math.min(1, (p.x - startX) / (width - startX)));
       let renderY = p.baseY + Math.sin(p.angle) * p.waveAmp;
 
       if (currentProgress > 0) {
@@ -140,6 +152,5 @@ hide_in_nav: true
   
   // アニメーションを開始
   animate();
-});
 
 </script>
