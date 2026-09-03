@@ -31,30 +31,65 @@ hide_in_nav: true
   </div>
 </div>
 
-<script>
-  window.addEventListener('DOMContentLoaded', function() {
-    const canvas = document.getElementById('errorCanvas');
-    const ctx = canvas.getContext('2d');
+<script>window.addEventListener('DOMContentLoaded', function() {
+  const canvas = document.getElementById('errorCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const width = canvas.width;
+  const height = canvas.height;
+  const centerY = height * 0.55; // 404の文字の高さに合わせる
+  
+  // --- 背景色を安全に取得・不透明化 
+  const bodyStyle = window.getComputedStyle(document.body);
+  let bgColor = bodyStyle.backgroundColor || '#eaeaea';
+  
+  // 波と粒子の色はMinimaのブランドカラーで固定
+  const brandColor = '#2a7ae2'; 
+  
+  // --- 粒子アニメーション用の設定 ---
+  const particleCount = 40; 
+  const startX = width * 0.65; // 画面中央付近から粒子を飛ばす
+  const particles = [];
+  
+  // 簡易的な擬似乱数で初期配置を作成
+  let seed = 42;
+  function random() {
+    let x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+  }
+  
+  // 粒子の初期データを配列に格納
+  for (let i = 0; i < particleCount; i++) {
+    const initialX = startX + random() * (width - startX + 100);
+    const progress = (initialX - startX) / (width - startX);
+    const spread = height * 0.25 * (progress + 0.2);
+    const initialY = centerY + (random() + random() - 1) * spread;
     
-    const width = canvas.width;
-    const height = canvas.height;
-    const centerY = height * 0.55; // 404の文字の高さに合わせる
-    
-    const bodyStyle = window.getComputedStyle(document.body);
-    const bgColor = bodyStyle.backgroundColor || '#eaeaea';
-    // 波と粒子の色はMinimaのブランドカラー
-    const brandColor = '#2a7ae2';
-    
+    particles.push({
+      x: initialX,
+      baseY: initialY, // サイン波の基準となる中心Y座標
+      size: 5 + random() * 4,
+      speed: 0.24 + random() * 0.76, // 横への移動速度（2倍設定維持）
+      angle: random() * Math.PI * 2,
+      waveSpeed: 0.01 + random() * 0.02, // 上下の波（うねり）のスピード（2倍設定維持）
+      waveAmp: 10 + random() * 20        // 上下に揺れる幅
+    });
+  }
+  
+  // アニメーションのループ関数
+  function animate() {
+    // 背景を塗る前に、確実に透明度を 1.0 (不透明) にリセットする
+    ctx.globalAlpha = 1.0;
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
-
-    // 減衰するサイン波を描画
+    
+    // 2. 減衰するサイン波を描画（元の形状・高さのまま固定）
     ctx.beginPath();
     ctx.strokeStyle = brandColor;
     ctx.lineWidth = 4;
     ctx.globalAlpha = 0.25; // 波の透明度
     
-    const waveLength = width * 0.75; // 波が進む長さ
+    const waveLength = width * 0.75; 
     for (let x = 0; x <= waveLength; x++) {
       const t = (x / waveLength) * 9; 
       const y = Math.sin(t) * Math.exp(-t * 0.18) * (height * 0.25);
@@ -67,32 +102,44 @@ hide_in_nav: true
     }
     ctx.stroke();
     
-    // データロストを表現する散布図（ノイズ粒子）を描画
-    ctx.globalAlpha = 0.18;
+    // 3. データロストを表現するノイズ粒子を更新・描画
+    ctx.globalAlpha = 0.18; // 粒子の透明度
     ctx.fillStyle = brandColor;
     
-    // 簡易的な擬似乱数で散布パターンを再現
-    let seed = 42;
-    function random() {
-      let x = Math.sin(seed++) * 10000;
-      return x - Math.floor(x);
-    }
-    
-    const particleCount = 80;
-    const startX = width * 0.45; // 画面中央付近から粒子を飛ばす
-    
     for (let i = 0; i < particleCount; i++) {
-      // 後半に行くほど散らばる範囲を広くする
-      const pX = startX + random() * (width - startX + 100);
-      const progress = (pX - startX) / (width - startX);
+      const p = particles[i];
       
-      // ガウス分布風に中央（centerY）に集まりつつ、後半は上下に広がる
-      const spread = height * 0.25 * (progress + 0.2);
-      const pY = centerY + (random() + random() - 1) * spread;
+      // 位置の更新
+      p.x += p.speed;
+      p.angle += p.waveSpeed;
+      
+      if (p.x > width + 50) {
+        p.x = startX - (random() * 20);
+        const progress = 0;
+        const spread = height * 0.25 * (progress + 0.2);
+        p.baseY = centerY + (random() + random() - 1) * spread;
+        p.angle = random() * Math.PI * 2;
+      }
+      
+      // ベースのY座標にサイン波の「うねり」を加える
+      const currentProgress = (p.x - startX) / (width - startX);
+      let renderY = p.baseY + Math.sin(p.angle) * p.waveAmp;
+
+      if (currentProgress > 0) {
+        p.baseY += (random() - 0.5) * (currentProgress * 1.0);
+      }
       
       ctx.beginPath();
-      ctx.arc(pX, pY, 5 + random() * 4, 0, Math.PI * 2);
+      ctx.arc(p.x, renderY, p.size, 0, Math.PI * 2);
       ctx.fill();
     }
-  });
+    
+    // 次のフレームを要求
+    requestAnimationFrame(animate);
+  }
+  
+  // アニメーションを開始
+  animate();
+});
+
 </script>
