@@ -45,6 +45,7 @@ hide_in_nav: true
     const bgColor = bodyStyle.backgroundColor || '#eaeaea';
     const brandColor = bodyStyle.color || '#2a7ae2'; 
     
+    ctx.globalAlpha = 1.0; // 背景は不透明でクリア
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
     
@@ -55,11 +56,10 @@ hide_in_nav: true
     ctx.beginPath();
     ctx.strokeStyle = brandColor;
     ctx.lineWidth = 4;
-    ctx.globalAlpha = 0.25; // matplotlibのalpha=0.3に相当
+    ctx.globalAlpha = 0.25; // 波の透明度
     
     const waveLength = width * 0.75; // 波が進む長さ
     for (let x = 0; x <= waveLength; x++) {
-      // matplotlibのコードと同じロジック (xを0〜10の範囲にマッピング)
       const t = (x / waveLength) * 9; 
       const y = Math.sin(t) * Math.exp(-t * 0.18) * (height * 0.25);
       
@@ -72,7 +72,8 @@ hide_in_nav: true
     ctx.stroke();
     
     // データロストを表現する散布図（ノイズ粒子）を描画
-    ctx.globalAlpha = 0.18;
+    // 粒子が消えないよう、不透明度を 0.4 〜 0.5 付近に引き上げ
+    ctx.globalAlpha = 0.45; 
     ctx.fillStyle = brandColor;
     
     // 簡易的な擬似乱数で散布パターンを再現
@@ -98,5 +99,7 @@ hide_in_nav: true
       ctx.arc(pX, pY, 5 + random() * 4, 0, Math.PI * 2);
       ctx.fill();
     }
+    // 最後に透明度をデフォルト（1.0）に戻しておく（他の描画への影響を防止）
+    ctx.globalAlpha = 1.0;
   })();
 </script>
