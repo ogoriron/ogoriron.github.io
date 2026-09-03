@@ -37,11 +37,7 @@ p:
 youtube_username: "ogoriron"
 
 # 以下は3.0用だがコメントアウトして使っていない
-minima:
-  social_links:
-    - title: ogoriron at YouTube
-      icon: youtube
-      url: "https://youtube.com/@ogoriron"
+# social_links:
 
 # ハッシュタグ: _ アンダーバーありのフォルダ _tags にしないとheaderに表示されちゃう
 # また以下を書かないと機能しない
