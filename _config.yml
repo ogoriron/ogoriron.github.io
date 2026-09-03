@@ -34,6 +34,12 @@ p:
   auth: "（要ログイン）"
   gentei: "（限定アクセス）"
 
+minima:
+  social_links:
+    - title: ogoriron at YouTube
+      icon: youtube
+      url: "https://youtube.com/@ogoriron"
+
 # ハッシュタグ: _ アンダーバーありのフォルダ _tags にしないとheaderに表示されちゃう
 # また以下を書かないと機能しない
 collections: { tags: { output: true } }
