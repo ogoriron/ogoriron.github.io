@@ -1,5 +1,5 @@
 ---
-# 空のフロントマター。JekyllがSassをコンパイルするため。
+# 外部リンクアイコンに要URL（また、ここには空のマター必要。JekyllがSassをコンパイルするため）
 ---
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 ogoriron
@@ -292,7 +292,7 @@ tr:last-child td:first-child { border-bottom-left-radius: 3px; border-bottom: no
 tr:last-child td:last-child { border-bottom-right-radius: 3px; border-bottom: none; }
 
 /* Wikipedia風外部リンク */
-a[href^="https://"]:not([href*="ogoriron.github.io"])::after {
+*:not(footer) a[href^="https://"]:not([href*="ogoriron.github.io"])::after {
   content: "";
   display: inline-block;
   width: 12px;
