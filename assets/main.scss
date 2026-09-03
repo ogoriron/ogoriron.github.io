@@ -149,6 +149,9 @@ cite a {
     }
   }
 }
+.social-media-list li+li {
+  padding-top: 0; /* 2.5.1 を上書き */
+}
 /* minima 3.00 ここまで */
 @media (prefers-color-scheme: dark) {
   .social-media-list {
