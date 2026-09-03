@@ -7,6 +7,11 @@ theme: minima
 timezone: Asia/Tokyo
 minima: { date_format: "%Y年%m月%d日" }
 
+# ナビ GitHub Pages (Minima 2.5.1) 
+header_pages:
+  - baby.md
+  - list.md
+
 # postフォルダ内の生成されるURLを簡単化
 defaults:
   - scope: { path: "", type: "posts" }
