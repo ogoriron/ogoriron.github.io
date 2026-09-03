@@ -4,18 +4,36 @@ Copyright (c) 2016-2025 GitHub, Inc. and jekyll/minima contributors
 Copyright (c) 2026 ogoriron
 
 https://github.com/jekyll/minima/blob/master/_includes/social.html
+
+list SNS in 2018
+https://github.com/jekyll/minima/blob/554361c89da8c03885da3a80106dc788b7412399/_includes/social.html
 {% endcomment %}
 <ul class="social-media-list">
-{%- for entry in site.minima.social_links -%}
+{% comment %}{%- for entry in site.minima.social_links -%}
   <li>
     <a rel="me" href="{{ entry.url }}" target="_blank" title="{{ entry.title }}">
       <span class="grey fa-brands fa-{{ entry.icon }} fa-lg"></span>
     </a>
   </li>
-{%- endfor -%}
+{%- endfor -%}{% endcomment %}
+{%- if site.youtube_username -%}
+  <li>
+    <a href="https://youtube.com/{{ site.youtube_username| cgi_escape | escape }}">
+      <svg xmlns="http://w3.org" viewBox="0 0 576 512" fill="currentColor">
+        <path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64
+          288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412
+          42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787
+          41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321
+          42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305
+          11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739
+          81.201z"/>
+      </svg>
+    </a>
+  </li>
+{%- endif -%}
 {% unless site.minima.hide_site_feed_link %}
   <li>
-    <a href="{{ site.feed.path | default: 'feed.xml' | absolute_url }}" target="_blank" title="Subscribe to syndication feed">
+    <a href="{{ site.feed.path | default: 'feed.xml' | absolute_url }}" target="_blank" title="配信フィードを購読">
       <svg class="svg-icon grey" viewbox="0 0 16 16">
         <path d="M12.8 16C12.8 8.978 7.022 3.2 0 3.2V0c8.777 0 16 7.223 16 16h-3.2zM2.194
           11.61c1.21 0 2.195.985 2.195 2.196 0 1.21-.99 2.194-2.2 2.194C.98 16 0 15.017 0
