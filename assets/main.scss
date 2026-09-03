@@ -10,6 +10,7 @@
   --dark-bg-color: #0b0d10;
   --dark-txt-color: #e0e0e0;
   --dark-accent-color: #00b099;
+  --dark-border: #363c43;
 }
 
 .site-header {
@@ -143,12 +144,18 @@ cite a {
     a {
       display: block;
       padding: 10px 12px;
-      border: 1px solid $border-color-01;
-      &:hover { border-color: $border-color-02 }
+      border: 1px solid #e7e7e7; /* $border-color-01 */
+      &:hover { border-color: #dbdbdb; } /* $border-color-02 */
     }
   }
 }
 /* minima 3.00 ここまで */
+@media (prefers-color-scheme: dark) {
+  li a {
+    border-color: var(--dark-border);
+    &:hover { border-color: var(--dark-accent-color); }
+  }
+}
 
 /* 独自タグ 長いから視認性のためにここ */
 .post-list { list-style: none; padding: 0; margin: 0; }
@@ -211,7 +218,7 @@ cite a {
   body { background-color: var(--dark-bg-color); color: var(--dark-txt-color); }
   .site-header { border-top: 0; border-bottom: 0.5px solid #2f343a; background-color: #000; }
   .page-content { background-color: var(--dark-bg-color); color: var(--dark-txt-color); }
-  .site-footer { border-top: 0.5px solid #363c43; background-color: #050607; }
+  .site-footer { border-top: 0.5px solid var(--dark-border); background-color: #050607; }
   .site-title, .site-nav .page-link { color: var(--dark-txt-color); }
   a, a:visited { color: #8ab4f8; }
   a:hover { color: #c4daff !important; text-decoration: none; }
