@@ -8,7 +8,9 @@ author:
 theme: minima
 
 timezone: Asia/Tokyo
-minima: { date_format: "%Y年%m月%d日" }
+minima:
+  date_format: "%Y/%m/%d"
+
 
 # ナビ GitHub Pages (Minima 2.5.1) 
 header_pages:
