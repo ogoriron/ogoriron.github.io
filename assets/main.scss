@@ -163,6 +163,7 @@ cite a {
 }
 
 /* 独自タグ 長いから視認性のためにここ */
+.nomobile { display: none; }
 .post-list { list-style: none; padding: 0; margin: 0; }
 .post-list > li{
   background: #fff;
