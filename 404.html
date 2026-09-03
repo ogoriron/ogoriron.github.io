@@ -2,6 +2,7 @@
 layout: default
 title: "404 ページがありません"
 permalink: /404.html
+hide_in_nav: true
 ---
 
 <div class="home" style="padding: 6vh 0; text-align: center; position: relative;">
@@ -20,7 +21,7 @@ permalink: /404.html
   </div>
 
   <div class="post-content" style="color: #828282; font-size: 0.95rem; margin-top: 1.5rem; margin-bottom: 3rem;">
-    <p>アクセスしようとしたページは削除されたか、URLが変更された可能性があります。</p>
+    <p>ページが削除、またはアドレスが変更された可能性があります。</p>
   </div>
 
   <div>
@@ -40,14 +41,17 @@ permalink: /404.html
     const height = canvas.height;
     const centerY = height * 0.55; // 404の文字の高さに合わせる
     
-    // 1. 背景をクリア（白）
-    ctx.fillStyle = '#ffffff';
+    const bodyStyle = window.getComputedStyle(document.body);
+    const bgColor = bodyStyle.backgroundColor || '#eaeaea';
+    const brandColor = bodyStyle.color || '#2a7ae2'; 
+    
+    ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
     
     // Minimaのブランドカラー #2a7ae2
     const brandColor = '#2a7ae2';
     
-    // 2. 減衰するサイン波を描画
+    // 減衰するサイン波を描画
     ctx.beginPath();
     ctx.strokeStyle = brandColor;
     ctx.lineWidth = 4;
@@ -67,11 +71,11 @@ permalink: /404.html
     }
     ctx.stroke();
     
-    // 3. データロストを表現する散布図（ノイズ粒子）を描画
+    // データロストを表現する散布図（ノイズ粒子）を描画
     ctx.globalAlpha = 0.18;
     ctx.fillStyle = brandColor;
     
-    // 簡易的な擬似乱数でmatplotlibと同じ散布パターンを再現
+    // 簡易的な擬似乱数で散布パターンを再現
     let seed = 42;
     function random() {
       let x = Math.sin(seed++) * 10000;
