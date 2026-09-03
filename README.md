@@ -2,6 +2,7 @@
 title: オゴリロン
 permalink: /
 chartjs: true
+hide_in_nav: true
 description: "日本における割り勘、奢り奢られ論に関するデータを分析します。「昔は・・」そんな都市伝説を解体！"
 ---
 {% comment %}
