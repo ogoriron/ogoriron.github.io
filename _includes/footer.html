@@ -37,4 +37,11 @@ at 2025-09-22
 
   </div>
 
-</footer>
+</footer>{% comment %} 以下、独自の追加。page.path: jekyllで取得しJavaScriptに渡す
+{% endcomment %}
+<script id="page-path" type="application/json">{{ page.path | jsonify }}</script>
+<script>{% include devmode.js %}</script>
+
+{% if page.chartjs %}
+<script>{% include chartrender.js %}</script>
+{% endif %}
