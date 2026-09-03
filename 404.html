@@ -34,7 +34,6 @@ hide_in_nav: true
 <script>
   window.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('errorCanvas');
-    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     
     const width = canvas.width;
@@ -43,14 +42,12 @@ hide_in_nav: true
     
     const bodyStyle = window.getComputedStyle(document.body);
     const bgColor = bodyStyle.backgroundColor || '#eaeaea';
-    const brandColor = bodyStyle.color || '#2a7ae2'; 
+    // 波と粒子の色はMinimaのブランドカラー
+    const brandColor = '#2a7ae2';
     
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
-    
-    // Minimaのブランドカラー #2a7ae2
-    const brandColor = '#2a7ae2';
-    
+
     // 減衰するサイン波を描画
     ctx.beginPath();
     ctx.strokeStyle = brandColor;
