@@ -1,0 +1,98 @@
+---
+layout: default
+title: "404 ページがありません"
+permalink: /404.html
+---
+
+<div class="home" style="padding: 6vh 0; text-align: center; position: relative;">
+  
+  <div style="position: relative; width: 100%; max-width: 640px; height: 320px; margin: 0 auto;">
+    <canvas id="errorCanvas" width="1280" height="640" style="width: 100%; height: 100%;"></canvas>
+    
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; text-align: center; width: 100%;">
+      <h1 style="font-size: 7rem; font-weight: 200; line-height: 1; color: rgba(42, 122, 226, 0.85); margin: 0 0 0.5rem 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: -0.02em;">
+        404
+      </h1>
+      <p style="font-size: 0.9rem; font-weight: 400; letter-spacing: 0.25em; color: rgba(17, 17, 17, 0.6); margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
+        ページがありません
+      </p>
+    </div>
+  </div>
+
+  <div class="post-content" style="color: #828282; font-size: 0.95rem; margin-top: 1.5rem; margin-bottom: 3rem;">
+    <p>アクセスしようとしたページは削除されたか、URLが変更された可能性があります。</p>
+  </div>
+
+  <div>
+    <a href="{{ '/' | relative_url }}" style="display: inline-block; font-size: 0.9rem; font-weight: 400; color: #2a7ae2; text-decoration: none; border: 1px solid #2a7ae2; padding: 12px 32px; border-radius: 24px; transition: all 0.2s;">
+      トップページへ戻る
+    </a>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('errorCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    const width = canvas.width;
+    const height = canvas.height;
+    const centerY = height * 0.55; // 404の文字の高さに合わせる
+    
+    // 1. 背景をクリア（白）
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    
+    // Minimaのブランドカラー #2a7ae2
+    const brandColor = '#2a7ae2';
+    
+    // 2. 減衰するサイン波を描画
+    ctx.beginPath();
+    ctx.strokeStyle = brandColor;
+    ctx.lineWidth = 4;
+    ctx.globalAlpha = 0.25; // matplotlibのalpha=0.3に相当
+    
+    const waveLength = width * 0.75; // 波が進む長さ
+    for (let x = 0; x <= waveLength; x++) {
+      // matplotlibのコードと同じロジック (xを0〜10の範囲にマッピング)
+      const t = (x / waveLength) * 9; 
+      const y = Math.sin(t) * Math.exp(-t * 0.18) * (height * 0.25);
+      
+      if (x === 0) {
+        ctx.moveTo(x, centerY - y);
+      } else {
+        ctx.lineTo(x, centerY - y);
+      }
+    }
+    ctx.stroke();
+    
+    // 3. データロストを表現する散布図（ノイズ粒子）を描画
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = brandColor;
+    
+    // 簡易的な擬似乱数でmatplotlibと同じ散布パターンを再現
+    let seed = 42;
+    function random() {
+      let x = Math.sin(seed++) * 10000;
+      return x - Math.floor(x);
+    }
+    
+    const particleCount = 80;
+    const startX = width * 0.45; // 画面中央付近から粒子を飛ばす
+    
+    for (let i = 0; i < particleCount; i++) {
+      // 後半に行くほど散らばる範囲を広くする
+      const pX = startX + random() * (width - startX + 100);
+      const progress = (pX - startX) / (width - startX);
+      
+      // ガウス分布風に中央（centerY）に集まりつつ、後半は上下に広がる
+      const spread = height * 0.25 * (progress + 0.2);
+      const pY = centerY + (random() + random() - 1) * spread;
+      
+      ctx.beginPath();
+      ctx.arc(pX, pY, 5 + random() * 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  })();
+</script>
