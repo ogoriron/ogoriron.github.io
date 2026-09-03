@@ -32,7 +32,7 @@ hide_in_nav: true
 </div>
 
 <script>
-  (function() {
+  window.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('errorCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -45,7 +45,6 @@ hide_in_nav: true
     const bgColor = bodyStyle.backgroundColor || '#eaeaea';
     const brandColor = bodyStyle.color || '#2a7ae2'; 
     
-    ctx.globalAlpha = 1.0; // 背景は不透明でクリア
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, width, height);
     
@@ -72,8 +71,7 @@ hide_in_nav: true
     ctx.stroke();
     
     // データロストを表現する散布図（ノイズ粒子）を描画
-    // 粒子が消えないよう、不透明度を 0.4 〜 0.5 付近に引き上げ
-    ctx.globalAlpha = 0.45; 
+    ctx.globalAlpha = 0.18;
     ctx.fillStyle = brandColor;
     
     // 簡易的な擬似乱数で散布パターンを再現
@@ -99,7 +97,5 @@ hide_in_nav: true
       ctx.arc(pX, pY, 5 + random() * 4, 0, Math.PI * 2);
       ctx.fill();
     }
-    // 最後に透明度をデフォルト（1.0）に戻しておく（他の描画への影響を防止）
-    ctx.globalAlpha = 1.0;
-  })();
+  });
 </script>
