@@ -246,51 +246,51 @@ cite a {
     font-weight: 800;
     letter-spacing: -0.03em;
   }
-/* ─── 大量データ用のコンパクトなテーブル設定 ─── */
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 12px 0; /* テーブル上下のスキマを狭く */
-  font-size: 0.9em; /* 文字をほんの少し小さくして一覧性を向上 */
-}
-table th, table td {
-  border-bottom: 1px solid #2d2d2d;
-  color: var(--dark-txt-color);
-  border-color: #222323;
-}
-table th:first-child,
-table td:first-child {
-  border-right: 1px solid #3d3d3d;
-}
-table th {
-  background-color: #252626;
-  font-weight: 700;
-  border-top: 1px solid #2d2d2d;
-  border-bottom: 3px double #555555; /* 二重線 */
-}
-table tbody tr:nth-child(odd) {
-  background-color: #242525;
-}
-table tbody tr:nth-child(even) {
-  background-color: #1e1e1e;
+  
+  .site-nav {
+    background-color: #1e1e1e; /* メニュー全体の背景 */
+    border: 1px solid var(--dark-accent-color);   /* メニューを囲む薄い枠線 */
+  }
+  .site-nav .menu-icon, .site-nav .nav-trigger {
+    background-color: #252626; /* タップするヘッダー部分を少し明るく */
+    fill: var(--dark-accent-color);
+    stroke: var(--dark-accent-color);
+  }
+  .site-nav .page-link {
+    color: var(--dark-accent-color);
+  }
 }
 /* ─── スマホ用アコーディオンメニュー ─── */
-  @media (max-width: 600px) {
-    .site-nav {
-      background-color: #1e1e1e; /* メニュー全体の背景 */
-      border: 1px solid var(--dark-accent-color);   /* メニューを囲む薄い枠線 */
-      border-radius: 4px;
-    }
-    .site-nav .menu-icon, .site-nav .nav-trigger {
-      background-color: #252626; /* タップするヘッダー部分を少し明るく */
-      fill: var(--dark-accent-color);
-      stroke: var(--dark-accent-color);
-    }
-    .site-nav .page-link {
-      color: var(--dark-accent-color);
-      display: block;
-      padding: 10px 0;
-    }
+@media (max-width: 600px) {
+  .site-nav {
+    border-radius: 4px;
+  }
+  .site-nav .page-link {
+    display: block;
+    padding: 10px 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  table th, table td {
+    border-bottom: 1px solid #2d2d2d;
+    color: var(--dark-txt-color);
+    border-color: #222323;
+  }
+  table th:first-child,
+  table td:first-child {
+    border-right: 1px solid #3d3d3d;
+  }
+  table th {
+    background-color: #252626;
+    border-top: 1px solid #2d2d2d;
+    border-bottom: 3px double #555555; /* 二重線 */
+  }
+  table tbody tr:nth-child(odd) {
+    background-color: #242525;
+  }
+  table tbody tr:nth-child(even) {
+    background-color: #1e1e1e;
   }
 }
 
@@ -409,7 +409,6 @@ aside::before {
   --color-cloud-dot: #a1a1aa;
   --color-cloud-count: #71717a;
 }
-
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-cloud-badge: #18181b;
@@ -438,7 +437,7 @@ aside::before {
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 4px;　
   border: 1px solid var(--bd-cloud-badge);
   background-color: var(--bg-cloud-badge);
   color: var(--tx-cloud-badge);
@@ -449,11 +448,9 @@ aside::before {
   background-color: var(--bg-cloud-hover);
   color: var(--tx-cloud-hover);
   border-color: var(--bd-cloud-hover);
-  text-decoration: none;
 }
 
 .tag-cloud-dot {
-  display: inline-block;
   width: 4px;
   height: 4px;
   border-radius: 50%;
